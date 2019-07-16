@@ -8,6 +8,11 @@
 ### 誌面掲載ソースコードの全文
 - [PlaceObjectのスクリプト](https://github.com/ktaka/ARKitten2019/blob/master/ARKitten/Assets/Scripts/PlaceObject.cs)
 
+### 追加の解説
+- [Unity HubからのUnityのインストール解説動画](https://youtu.be/BWoLqxWhHUw)
+- [スマートフォンでの実行時の動画](https://youtu.be/w3qsVwF3wbg)
+
+### ビルドについて
 この完成状態のリポジトリをダウンロードしてビルドする際は、Unityのパッケージマネージャーから下記のパッケージのインストールが必要です。
 - AR Foundation (version 2.2.0)
 - ARCore XR Plugin (version 2.1.0)
