@@ -3,6 +3,8 @@
 
 [2019年8月号](http://gihyo.jp/magazine/SD/archive/2019/201908)の記事での完成状態がコミットされています。
 
+<img src="ARKitten2019.jpg" width="420px">
+
 ## 2019年8月号
 
 ### 誌面掲載ソースコードの全文
