@@ -10,7 +10,7 @@
 
 ### 追加の解説
 - [Unity HubからのUnityのインストール解説動画](https://youtu.be/BWoLqxWhHUw)
-- [スマートフォンでの実行時の動画](https://youtu.be/w3qsVwF3wbg)
+- [スマートフォンでの実行時の動画](https://youtu.be/n6xoIz4smTk)
 
 ### ビルドについて
 この完成状態のリポジトリをダウンロードしてビルドする際は、Unityのパッケージマネージャーから下記のパッケージのインストールが必要です。
