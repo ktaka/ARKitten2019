@@ -12,6 +12,8 @@
 - [ARShadow.shader](https://github.com/ktaka/ARKitten2019/blob/201909/ARKitten/Assets/Materials/ARShadow.shader)
 
 ### 追加の解説
+- [光源推定の組み込み手順の動画](https://youtu.be/ooC_l_VHQPc)
+- [影（キャストシャドウ）組み込み手順の動画](https://youtu.be/KO2YyDGR5Lk)
 - [スマートフォンでの実行時の動画](https://youtu.be/_qIKQdJlpak)
 
 ---
