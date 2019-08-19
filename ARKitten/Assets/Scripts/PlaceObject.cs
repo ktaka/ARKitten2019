@@ -44,17 +44,34 @@ public class PlaceObject : MonoBehaviour
 
         if (HitTest(touchPosition, out Pose hitPose))
         { // タッチした先に平面がある場合
+            // モデル（子猫）を配置する位置からカメラへの方向のベクトルを求めて
+            // モデルをどのくらい回転させるか求める
+            Quaternion rotation = Quaternion.LookRotation(GetLookVector(hitPose.position));
             if (spawnedObject == null)
             { // 配置用モデルが未生成の場合
                 // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
-                spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation);
+                spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
             }
             else
             { // 配置するモデルが生成済みの場合
                 // 配置用モデルの位置をレイが平面に衝突した位置にする
                 spawnedObject.transform.position = hitPose.position;
+                // 配置用モデルを回転させてカメラの方に向ける
+                spawnedObject.transform.rotation = rotation;
             }
         }
+    }
+
+    // 配置モデル（子猫）からカメラへの方向のベクトルを求める
+    Vector3 GetLookVector(Vector3 position)
+    {
+        // 2点間の位置の差分をとって方向ベクトルを求める
+        Vector3 lookVector = arSession.camera.transform.position - position;
+        // 床面の上（XZ平面）のみを回転の対象とするため、上下方向（Y軸）の差分は無視する
+        lookVector.y = 0.0f;
+        // ベクトルを正規化する
+        lookVector.Normalize();
+        return lookVector;
     }
 
     // タッチ位置を取得する
