@@ -36,6 +36,11 @@ public class PlaceObject : MonoBehaviour
     // フレーム毎に呼び出される
     void Update()
     {
+        if (spawnedObject != null)
+        {
+            CheckObjDirection();
+        }
+
         // タッチされていない場合は処理をぬける
         if (!TryGetTouchPosition(out Vector2 touchPosition))
         {
@@ -69,9 +74,18 @@ public class PlaceObject : MonoBehaviour
         Vector3 lookVector = arSession.camera.transform.position - position;
         // 床面の上（XZ平面）のみを回転の対象とするため、上下方向（Y軸）の差分は無視する
         lookVector.y = 0.0f;
-        // ベクトルを正規化する
-        lookVector.Normalize();
         return lookVector;
+    }
+
+    void CheckObjDirection()
+    {
+        Vector3 catDirVector = spawnedObject.transform.forward;
+        Vector3 lookVector = GetLookVector(spawnedObject.transform.position);
+        float dot = Vector3.Dot(catDirVector, lookVector);
+        if (dot <= 0.5f)
+        {
+            spawnedObject.transform.rotation = Quaternion.LookRotation(lookVector);
+        }
     }
 
     // タッチ位置を取得する
