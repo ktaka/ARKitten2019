@@ -11,12 +11,17 @@ public class PlaceObject : MonoBehaviour
     public GameObject placedPrefab; // 配置用モデルのプレハブ
     public bool useAR = true; // AR使用フラグ（プレイモードで実行する際はfalseにする）
     public GameObject floorPlane; // プレイモード用の床面
-
+    public float rotateDuration = 3.0f;
+    public float delayTime = 3.0f;
+    
     GameObject spawnedObject; // 配置モデルのプレハブから生成されたオブジェクト
     // ARRaycastManagerは画面をタッチした先に伸ばしたレイと平面の衝突を検知する
     ARRaycastManager raycastManager;
     ARSessionOrigin arSession;
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    Quaternion rotateFrom;
+    Quaternion rotateTo;
+    float rotateDelta;
 
     // 起動時に1度呼び出される
     void Start()
@@ -38,7 +43,16 @@ public class PlaceObject : MonoBehaviour
     {
         if (spawnedObject != null)
         {
-            CheckObjDirection();
+            if (rotateDelta <= 0.0f)
+            {
+                ResetRotateAnim();
+                CheckObjDirection();
+            }
+            else
+            {
+                RotateCamera();
+                rotateDelta -= Time.deltaTime;
+            }
         }
 
         // タッチされていない場合は処理をぬける
@@ -84,7 +98,23 @@ public class PlaceObject : MonoBehaviour
         float dot = Vector3.Dot(catDirVector, lookVector);
         if (dot <= 0.5f)
         {
-            spawnedObject.transform.rotation = Quaternion.LookRotation(lookVector);
+            rotateFrom = spawnedObject.transform.rotation;
+            rotateTo = Quaternion.LookRotation(lookVector);
+            rotateDelta = rotateDuration + delayTime;
+        }
+    }
+
+    void ResetRotateAnim()
+    {
+        rotateDelta = 0.0f;
+    }
+
+    void RotateCamera()
+    {
+        if (rotateDelta <= rotateDuration)
+        {
+            float t = 1.0f - (rotateDelta / rotateDuration);
+            spawnedObject.transform.rotation = Quaternion.Slerp(rotateFrom, rotateTo, t);
         }
     }
 
