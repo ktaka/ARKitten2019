@@ -1,9 +1,23 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-[2019年9月号](http://gihyo.jp/magazine/SD/archive/2019/201909)の記事での完成状態がコミットされています。
+[2019年10月号](http://gihyo.jp/magazine/SD/archive/2019/201910)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
+
+## 2019年10月号
+
+### 誌面掲載ソースコードの全文
+- [子猫出現時に向きを変える機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/1098dbfb1e70a0830e73e71d0fbd2dabd31488c2#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201910_part1/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [カメラの動きに応じて子猫の向きを変える機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/5012f8a4f9c3216f31a6c3ccf5dd045a4ba6599a#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201910_part2/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [カメラの動きに応じて子猫の向きをアニメーションする機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f22b1f30a967d7a58334c538d027eeb1f8fc980a#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201910/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+---
 
 ## 2019年9月号
 
