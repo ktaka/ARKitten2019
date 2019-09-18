@@ -17,6 +17,9 @@
 - [カメラの動きに応じて子猫の向きをアニメーションする機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f22b1f30a967d7a58334c538d027eeb1f8fc980a#diff-edc75b09adb2b481f7fd694404d9495d)
   - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201910/ARKitten/Assets/Scripts/PlaceObject.cs)
 
+### 追加の解説
+- [スマートフォンでの実行時の動画](https://youtu.be/t644iFvGyHI)
+
 ---
 
 ## 2019年9月号
