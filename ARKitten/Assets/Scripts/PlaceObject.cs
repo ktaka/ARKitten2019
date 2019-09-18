@@ -22,6 +22,7 @@ public class PlaceObject : MonoBehaviour
     Quaternion rotateFrom;
     Quaternion rotateTo;
     float rotateDelta;
+    Animator animator;
 
     // 起動時に1度呼び出される
     void Start()
@@ -70,6 +71,7 @@ public class PlaceObject : MonoBehaviour
             { // 配置用モデルが未生成の場合
                 // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
+                animator = spawnedObject.GetComponent<Animator>();
             }
             else
             { // 配置するモデルが生成済みの場合
@@ -88,6 +90,7 @@ public class PlaceObject : MonoBehaviour
         Vector3 lookVector = arSession.camera.transform.position - position;
         // 床面の上（XZ平面）のみを回転の対象とするため、上下方向（Y軸）の差分は無視する
         lookVector.y = 0.0f;
+        lookVector.Normalize();
         return lookVector;
     }
 
@@ -107,12 +110,14 @@ public class PlaceObject : MonoBehaviour
     void ResetRotateAnim()
     {
         rotateDelta = 0.0f;
+        animator.SetFloat("MoveSpeed", 0.0f);
     }
 
     void RotateCamera()
     {
         if (rotateDelta <= rotateDuration)
         {
+            animator.SetFloat("MoveSpeed", 0.2f);
             float t = 1.0f - (rotateDelta / rotateDuration);
             spawnedObject.transform.rotation = Quaternion.Slerp(rotateFrom, rotateTo, t);
         }
