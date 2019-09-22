@@ -18,6 +18,7 @@
   - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201910/ARKitten/Assets/Scripts/PlaceObject.cs)
 
 ### 追加の解説
+- [プレイモードで子猫が向きを変える動作を確認する手順](https://youtu.be/C1y0m2BwYNQ)
 - [スマートフォンでの実行時の動画](https://youtu.be/t644iFvGyHI)
 
 ---
