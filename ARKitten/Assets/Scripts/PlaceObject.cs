@@ -11,17 +11,17 @@ public class PlaceObject : MonoBehaviour
     public GameObject placedPrefab; // 配置用モデルのプレハブ
     public bool useAR = true; // AR使用フラグ（プレイモードで実行する際はfalseにする）
     public GameObject floorPlane; // プレイモード用の床面
-    public float rotateDuration = 3.0f;
-    public float delayTime = 3.0f;
+    public float rotateDuration = 3.0f; // 回転所要時間
+    public float delayTime = 3.0f; // 回転を始めるまでの時間
     
     GameObject spawnedObject; // 配置モデルのプレハブから生成されたオブジェクト
     // ARRaycastManagerは画面をタッチした先に伸ばしたレイと平面の衝突を検知する
     ARRaycastManager raycastManager;
     ARSessionOrigin arSession;
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    Quaternion rotateFrom;
-    Quaternion rotateTo;
-    float rotateDelta;
+    Quaternion rotateFrom; // 回転開始値
+    Quaternion rotateTo; // 回転終了値
+    float rotateDelta; // 回転アニメーション残り時間
 
     // 起動時に1度呼び出される
     void Start()
@@ -43,14 +43,19 @@ public class PlaceObject : MonoBehaviour
     {
         if (spawnedObject != null)
         {
+            // 回転アニメーション残り時間が0より大きい場合は回転させる
             if (rotateDelta <= 0.0f)
             {
+                // 回転アニメーションをリセットする
                 ResetRotateAnim();
+                // 配置オブジェクトの向きとカメラへの方向をチェックして回転に必要な値を求める
                 CheckObjDirection();
             }
             else
             {
-                RotateCamera();
+                // 配置オブジェクトをカメラの方に回転させる
+                RotateToCamera();
+                // 回転アニメーション残り時間を求める
                 rotateDelta -= Time.deltaTime;
             }
         }
@@ -91,29 +96,44 @@ public class PlaceObject : MonoBehaviour
         return lookVector;
     }
 
+    // 配置オブジェクトの向きとカメラへの方向をチェックして回転に必要な値を求める
     void CheckObjDirection()
     {
+        // 配置オブジェクトの向きのベクトルを得る
         Vector3 catDirVector = spawnedObject.transform.forward;
+        // 配置オブジェクトからカメラへの方向のベクトルを得る
         Vector3 lookVector = GetLookVector(spawnedObject.transform.position);
+        // 配置オブジェクトの向きとカメラへの方向のベクトルの内積を得る
         float dot = Vector3.Dot(catDirVector, lookVector);
+        // ２つのベクトルのなす角が60°以上なら回転が必要とする
         if (dot <= 0.5f)
         {
+            // 配置オブジェクトの現在の向きを回転開始値とする
             rotateFrom = spawnedObject.transform.rotation;
+            // 配置オブジェクトからカメラへの方向を回転終了値とする
             rotateTo = Quaternion.LookRotation(lookVector);
+            // 回転アニメーション残り時間に回転所要時間に回転を始めるまでの時間を加えてセットする　
+            // （回転を始めるまでの時間分遅れて回転を始めるため）
             rotateDelta = rotateDuration + delayTime;
         }
     }
 
+    // 回転アニメーションをリセットする
     void ResetRotateAnim()
     {
+        // 回転アニメーション残り時間を0にすると回転は行わない
         rotateDelta = 0.0f;
     }
 
-    void RotateCamera()
+    // カメラの方向に回転する
+    void RotateToCamera()
     {
+        // 回転アニメーション残り時間が回転所要時間の値以下の場合は回転する
         if (rotateDelta <= rotateDuration)
         {
+            // 回転アニメーション残り時間を経過時間(0.0〜1.0)に正規化する
             float t = 1.0f - (rotateDelta / rotateDuration);
+            // 経過時間(0.0〜1.0）の回転開始値から回転終了値の間の補間値を配置モデルにセットする
             spawnedObject.transform.rotation = Quaternion.Slerp(rotateFrom, rotateTo, t);
         }
     }
