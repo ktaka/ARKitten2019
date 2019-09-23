@@ -383,9 +383,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aacd13fde7af44d7f946e875cea97056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placedPrefab: {fileID: 120014, guid: 13fcd8723a996bb448983fcb7339a733, type: 3}
+  placedPrefab: {fileID: 4690818686243658495, guid: edf0af67e9db4400a9529e8597bd1c2e,
+    type: 3}
   useAR: 0
   floorPlane: {fileID: 1696569366}
+  rotateDuration: 3
+  delayTime: 3
 --- !u!114 &1544679005
 MonoBehaviour:
   m_ObjectHideFlags: 0
