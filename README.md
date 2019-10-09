@@ -1,11 +1,26 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-[2019年10月号](http://gihyo.jp/magazine/SD/archive/2019/201910)の記事での完成状態がコミットされています。
+masterブランチには[2019年11月号](http://gihyo.jp/magazine/SD/archive/2019/201911)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2019年11月号
+
+### 誌面掲載ソースコードの全文
+- [PlaceObjectにアニメーション制御を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/20ea10f2e973e1eb67af021bad706b834350dd6b#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201911r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [RootMotionスクリプト](https://github.com/ktaka/ARKitten2019/blob/201911r/ARKitten/Assets/Scripts/RootMotion.cs)
+
+### 追加の解説
+- [Animator Controllerを作成する手順]()
+- [スマートフォンでの実行時の動画](https://youtu.be/qD2VeAyYbZI)
+
+---
+
 ## 2019年10月号
+[2019年10月号](http://gihyo.jp/magazine/SD/archive/2019/201910)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201910)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [子猫出現時に向きを変える機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/1098dbfb1e70a0830e73e71d0fbd2dabd31488c2#diff-edc75b09adb2b481f7fd694404d9495d)
@@ -24,6 +39,7 @@
 ---
 
 ## 2019年9月号
+[2019年09月号](http://gihyo.jp/magazine/SD/archive/2019/201909)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201909)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [LightEstimationのスクリプト](https://github.com/ktaka/ARKitten2019/blob/201909/ARKitten/Assets/Scripts/LightEstimation.cs)
@@ -37,6 +53,7 @@
 ---
 
 ## 2019年8月号
+[2019年08月号](http://gihyo.jp/magazine/SD/archive/2019/201908)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201908)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [PlaceObjectのスクリプト](https://github.com/ktaka/ARKitten2019/blob/201908/ARKitten/Assets/Scripts/PlaceObject.cs)
