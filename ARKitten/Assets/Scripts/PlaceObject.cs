@@ -22,6 +22,7 @@ public class PlaceObject : MonoBehaviour
     Quaternion rotateFrom; // 回転開始値
     Quaternion rotateTo; // 回転終了値
     float rotateDelta; // 回転アニメーション残り時間
+    Animator animator;
 
     // 起動時に1度呼び出される
     void Start()
@@ -75,6 +76,7 @@ public class PlaceObject : MonoBehaviour
             { // 配置用モデルが未生成の場合
                 // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
+                animator = spawnedObject.GetComponent<Animator>();
             }
             else
             { // 配置するモデルが生成済みの場合
@@ -93,6 +95,7 @@ public class PlaceObject : MonoBehaviour
         Vector3 lookVector = arSession.camera.transform.position - position;
         // 床面の上（XZ平面）のみを回転の対象とするため、上下方向（Y軸）の差分は無視する
         lookVector.y = 0.0f;
+        lookVector.Normalize();
         return lookVector;
     }
 
@@ -123,6 +126,7 @@ public class PlaceObject : MonoBehaviour
     {
         // 回転アニメーション残り時間を0にすると回転は行わない
         rotateDelta = 0.0f;
+        animator.SetFloat("MoveSpeed", 0.0f);
     }
 
     // カメラの方向に回転する
@@ -131,6 +135,7 @@ public class PlaceObject : MonoBehaviour
         // 回転アニメーション残り時間が回転所要時間の値以下の場合は回転する
         if (rotateDelta <= rotateDuration)
         {
+            animator.SetFloat("MoveSpeed", 0.2f);
             // 回転アニメーション残り時間を経過時間(0.0〜1.0)に正規化する
             float t = 1.0f - (rotateDelta / rotateDuration);
             // 経過時間(0.0〜1.0）の回転開始値から回転終了値の間の補間値を配置モデルにセットする
