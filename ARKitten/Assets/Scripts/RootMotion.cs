@@ -12,7 +12,8 @@ public class RootMotion : MonoBehaviour
             Vector3 forward = transform.forward;
             forward.y = 0;
             forward.Normalize();
-            transform.position += (forward * animator.GetFloat("MoveSpeed")) * Time.deltaTime;
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.position += (forward * animator.GetFloat("MoveSpeed")) * Time.deltaTime;
         }
     }
 }

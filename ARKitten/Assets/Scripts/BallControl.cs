@@ -5,6 +5,7 @@ using UnityEngine;
 public class BallControl : MonoBehaviour
 {
     public GameObject ballObject;
+    public PlaceObject placeObject;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,8 @@ public class BallControl : MonoBehaviour
         Vector3 pos = touchPosition;
         pos.z = Camera.main.nearClipPlane * 2.0f;
         var position = Camera.main.ScreenToWorldPoint(pos);
-        Instantiate(ballObject, position, Quaternion.identity);
+        GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
+        obj.GetComponent<BallOperation>().placeObject = placeObject;
     }
 
     // タッチ位置を取得する

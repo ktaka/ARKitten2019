@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballObject: {fileID: 71683306740900570, guid: fda3ea81d815f492f9a662f556ad9e81,
     type: 3}
+  placeObject: {fileID: 1544679004}
 --- !u!4 &79699885
 Transform:
   m_ObjectHideFlags: 0
