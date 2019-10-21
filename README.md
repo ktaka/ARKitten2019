@@ -13,8 +13,9 @@ masterブランチには[2019年11月号](http://gihyo.jp/magazine/SD/archive/20
 
 - [RootMotionスクリプト](https://github.com/ktaka/ARKitten2019/blob/201911r/ARKitten/Assets/Scripts/RootMotion.cs)
 
-### 追加の解説
+### 動画解説
 - [Animator Controllerを作成する手順]()
+- [プレハブの作成]()
 - [スマートフォンでの実行時の動画](https://youtu.be/qD2VeAyYbZI)
 
 ---
