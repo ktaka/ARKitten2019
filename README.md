@@ -15,7 +15,7 @@ masterブランチには[2019年11月号](http://gihyo.jp/magazine/SD/archive/20
 
 ### 動画解説
 - [Animator Controllerを作成する手順](https://youtu.be/jHsp4NLCsUs)
-- [プレハブの作成]()
+- [プレハブの作成](https://youtu.be/dxLWEPFlESo)
 - [スマートフォンでの実行時の動画](https://youtu.be/qD2VeAyYbZI)
 
 ---
