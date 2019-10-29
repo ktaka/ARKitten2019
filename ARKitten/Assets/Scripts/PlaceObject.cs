@@ -148,7 +148,7 @@ public class PlaceObject : MonoBehaviour
     {
 #if UNITY_EDITOR
         // Unityエディターで実行される場合
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(1))
         {
             // マウスボタンが押された位置を取得する
             var mousePosition = Input.mousePosition;
@@ -157,7 +157,7 @@ public class PlaceObject : MonoBehaviour
         }
 #else
         // スマートフォンで実行される場合
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 2)
         {
             // 画面がタッチされた位置を取得する
             touchPosition = Input.GetTouch(0).position;
