@@ -23,6 +23,10 @@ public class PlaceObject : MonoBehaviour
     Quaternion rotateTo; // 回転終了値
     float rotateDelta; // 回転アニメーション残り時間
     Animator animator;
+    Rigidbody rb;
+    bool isMoving = false;
+    float arrivalTime;
+    float speed;
 
     // 起動時に1度呼び出される
     void Start()
@@ -42,7 +46,7 @@ public class PlaceObject : MonoBehaviour
     // フレーム毎に呼び出される
     void Update()
     {
-        if (spawnedObject != null)
+        if (spawnedObject != null && isMoving == false)
         {
             // 回転アニメーション残り時間が0より大きい場合は回転させる
             if (rotateDelta <= 0.0f)
@@ -77,13 +81,14 @@ public class PlaceObject : MonoBehaviour
                 // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
                 animator = spawnedObject.GetComponent<Animator>();
+                rb = spawnedObject.GetComponent<Rigidbody>();
             }
             else
             { // 配置するモデルが生成済みの場合
                 // 配置用モデルの位置をレイが平面に衝突した位置にする
-                spawnedObject.transform.position = hitPose.position;
+                rb.position = hitPose.position;
                 // 配置用モデルを回転させてカメラの方に向ける
-                spawnedObject.transform.rotation = rotation;
+                rb.rotation = rotation;
             }
         }
     }
@@ -103,16 +108,16 @@ public class PlaceObject : MonoBehaviour
     void CheckObjDirection()
     {
         // 配置オブジェクトの向きのベクトルを得る
-        Vector3 catDirVector = spawnedObject.transform.forward;
+        Vector3 catDirVector = rb.transform.forward;
         // 配置オブジェクトからカメラへの方向のベクトルを得る
-        Vector3 lookVector = GetLookVector(spawnedObject.transform.position);
+        Vector3 lookVector = GetLookVector(rb.position);
         // 配置オブジェクトの向きとカメラへの方向のベクトルの内積を得る
         float dot = Vector3.Dot(catDirVector, lookVector);
         // ２つのベクトルのなす角が60°以上なら回転が必要とする
         if (dot <= 0.5f)
         {
             // 配置オブジェクトの現在の向きを回転開始値とする
-            rotateFrom = spawnedObject.transform.rotation;
+            rotateFrom = rb.rotation;
             // 配置オブジェクトからカメラへの方向を回転終了値とする
             rotateTo = Quaternion.LookRotation(lookVector);
             // 回転アニメーション残り時間に回転所要時間に回転を始めるまでの時間を加えてセットする　
@@ -139,7 +144,7 @@ public class PlaceObject : MonoBehaviour
             // 回転アニメーション残り時間を経過時間(0.0〜1.0)に正規化する
             float t = 1.0f - (rotateDelta / rotateDuration);
             // 経過時間(0.0〜1.0）の回転開始値から回転終了値の間の補間値を配置モデルにセットする
-            spawnedObject.transform.rotation = Quaternion.Slerp(rotateFrom, rotateTo, t);
+            rb.rotation = Quaternion.Slerp(rotateFrom, rotateTo, t);
         }
     }
 
@@ -166,6 +171,32 @@ public class PlaceObject : MonoBehaviour
 #endif
         touchPosition = default;
         return false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (arrivalTime > 0.0f)
+        {
+            arrivalTime -= Time.deltaTime;
+            if (arrivalTime < Mathf.Epsilon)
+            {
+                ResetRotateAnim();
+                isMoving = false;
+            }
+        }
+    }
+
+    public void MoveTo(Vector3 pos)
+    {
+        Vector3 planePos = pos;
+        planePos.y = rb.transform.position.y;
+        rb.transform.LookAt(planePos);
+        Vector3 distanceVec = planePos - rb.transform.position;
+        float distance = distanceVec.magnitude;
+        isMoving = true;
+        speed = 0.2f;
+        animator.SetFloat("MoveSpeed", speed);
+        arrivalTime = distance / speed;
     }
 
     // タッチされた先に平面があるか判定する
