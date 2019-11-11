@@ -82,7 +82,7 @@ public class PlaceObject : MonoBehaviour
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
                 animator = spawnedObject.GetComponent<Animator>();
                 rb = spawnedObject.GetComponent<Rigidbody>();
-
+                rb.position = hitPose.position;
             }
             else
             { // 配置するモデルが生成済みの場合
@@ -154,7 +154,7 @@ public class PlaceObject : MonoBehaviour
     {
 #if UNITY_EDITOR
         // Unityエディターで実行される場合
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             // マウスボタンが押された位置を取得する
             var mousePosition = Input.mousePosition;
@@ -165,9 +165,12 @@ public class PlaceObject : MonoBehaviour
         // スマートフォンで実行される場合
         if (Input.touchCount == 2)
         {
-            // 画面がタッチされた位置を取得する
-            touchPosition = Input.GetTouch(0).position;
-            return true;
+            var touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began) {
+                // 画面がタッチされた位置を取得する
+                touchPosition = touch.position;
+                return true;
+            }
         }
 #endif
         touchPosition = default;

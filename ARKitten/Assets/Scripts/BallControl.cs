@@ -23,9 +23,14 @@ public class BallControl : MonoBehaviour
         }
         Vector3 pos = touchPosition;
         pos.z = Camera.main.nearClipPlane * 2.0f;
-        var position = Camera.main.ScreenToWorldPoint(pos);
-        GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
-        obj.GetComponent<BallOperation>().placeObject = placeObject;
+        Ray ray = Camera.main.ScreenPointToRay(pos);
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(ray, out hit) == false || hit.rigidbody == null)
+        {
+            var position = Camera.main.ScreenToWorldPoint(pos);
+            GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
+            obj.GetComponent<BallOperation>().placeObject = placeObject;
+        }
     }
 
     // タッチ位置を取得する
