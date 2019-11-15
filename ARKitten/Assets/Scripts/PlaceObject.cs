@@ -235,7 +235,14 @@ public class PlaceObject : MonoBehaviour
         Vector3 distanceVec = planePos - rb.transform.position;
         float distance = distanceVec.magnitude;
         isMoving = true;
-        speed = 0.2f;
+        if (distance > 1.0f)
+        {
+            speed = 0.7f;
+        }
+        else
+        {
+            speed = 0.2f;
+        }
         animator.SetFloat("MoveSpeed", speed);
         arrivalTime = distance / speed;
     }
