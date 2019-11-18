@@ -9,7 +9,8 @@ public class RootMotion : MonoBehaviour
         Animator animator = GetComponent<Animator>();
         if (animator)
         {
-            transform.position += (transform.forward * animator.GetFloat("MoveSpeed")) * Time.deltaTime;
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.position += (transform.forward * animator.GetFloat("MoveSpeed")) * Time.deltaTime;
         }
     }
 }
