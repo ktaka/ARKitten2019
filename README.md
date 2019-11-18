@@ -1,11 +1,35 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2019年11月号](http://gihyo.jp/magazine/SD/archive/2019/201911)の記事での完成状態がコミットされています。
+masterブランチには[2019年12月号](http://gihyo.jp/magazine/SD/archive/2019/201912)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2019年12月号
+
+### 誌面掲載ソースコードの全文
+- [PlaceObjectのタップ処理を2本指にする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/0b37ae7a57c8994fdf3f9a1fcf6d547c92e4f7bc#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201912r_part_1/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [BallControlスクリプト](https://github.com/ktaka/ARKitten2019/blob/201912r_part_1/ARKitten/Assets/Scripts/BallControl.cs)
+
+- [PlaceObjectにRigidbodyによる制御を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f78edc42b6547c22676b657c7a1f43b60deaf83b#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201912r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [RootMotionにRigidbodyによる制御を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f78edc42b6547c22676b657c7a1f43b60deaf83b#diff-6db954ca0fb619beaca540bcc60e2a2a)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201912r/ARKitten/Assets/Scripts/RootMotion.cs)
+
+- [BallOperationスクリプト](https://github.com/ktaka/ARKitten2019/blob/201912r/ARKitten/Assets/Scripts/BallOperation.cs)
+
+- [BallControlに子猫が反応するための機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f78edc42b6547c22676b657c7a1f43b60deaf83b#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/201912r/ARKitten/Assets/Scripts/BallControl.cs)
+
+### 動画解説
+- [スマートフォンでの実行時の動画](https://youtu.be/iByN_FFv370)
+
+
 ## 2019年11月号
+[2019年11月号](http://gihyo.jp/magazine/SD/archive/2019/201911)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201911r)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [PlaceObjectにアニメーション制御を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/20ea10f2e973e1eb67af021bad706b834350dd6b#diff-edc75b09adb2b481f7fd694404d9495d)
