@@ -10,6 +10,7 @@ public class RootMotion : MonoBehaviour
         if (animator)
         {
             Rigidbody rb = GetComponent<Rigidbody>();
+            // 子猫が向いている方向に経過時間分だけ動かす
             rb.position += (transform.forward * animator.GetFloat("MoveSpeed")) * Time.deltaTime;
         }
     }
