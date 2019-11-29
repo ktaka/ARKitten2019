@@ -27,13 +27,20 @@ public class BallControl : MonoBehaviour
         Vector3 pos = touchPosition;
         // 画面上の2D座標（スクリーン座標）を画面の少し奥（カメラのニアクリップ面より先）に設定
         pos.z = Camera.main.nearClipPlane * 2.0f;
-        // スクリーン座標をワールド座標（３次元空間の中の位置）に変換
-        var position = Camera.main.ScreenToWorldPoint(pos);
-        // ボールのオブジェクトを生成
-        GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
-        // ボールのオブジェクトと子猫の配置オブジェクトを関連付ける
-        // （ボールが平面に当たった時に子猫に反応する命令を出せるようにするため）
-        obj.GetComponent<BallOperation>().placeObject = placeObject;
+        // タップした位置から奥行き方向に伸びるレイを作成
+        Ray ray = Camera.main.ScreenPointToRay(pos);
+        RaycastHit hit = new RaycastHit();
+        // 伸ばしたレイにぶつかるオブジェクトがない場合
+        if (Physics.Raycast(ray, out hit) == false || hit.rigidbody == null)
+        {
+            // スクリーン座標をワールド座標（３次元空間の中の位置）に変換
+            var position = Camera.main.ScreenToWorldPoint(pos);
+            // ボールのオブジェクトを生成
+            GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
+            // ボールのオブジェクトと子猫の配置オブジェクトを関連付ける
+            // （ボールが平面に当たった時に子猫に反応する命令を出せるようにするため）
+            obj.GetComponent<BallOperation>().placeObject = placeObject;
+        }
     }
 
     // タッチ位置を取得する
