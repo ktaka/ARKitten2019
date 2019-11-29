@@ -22,11 +22,11 @@ public class PlaceObject : MonoBehaviour
     Quaternion rotateFrom; // 回転開始値
     Quaternion rotateTo; // 回転終了値
     float rotateDelta; // 回転アニメーション残り時間
-    Animator animator;
-    Rigidbody rb;
-    bool isMoving = false;
-    float arrivalTime;
-    float speed;
+    Animator animator; // 子猫のアニメーター
+    Rigidbody rb; // 子猫のリジッドボディ
+    bool isMoving = false; // 子猫の移動中を示すフラグ
+    float arrivalTime; // 子猫が目的の位置まで移動するのにかかる時間
+    float speed; // 子猫の移動スピード
 
     // 起動時に1度呼び出される
     void Start()
@@ -46,6 +46,7 @@ public class PlaceObject : MonoBehaviour
     // フレーム毎に呼び出される
     void Update()
     {
+        // 移動中フラグが立っている場合は回転しない
         if (spawnedObject != null && isMoving == false)
         {
             // 回転アニメーション残り時間が0より大きい場合は回転させる
@@ -80,7 +81,11 @@ public class PlaceObject : MonoBehaviour
             { // 配置用モデルが未生成の場合
                 // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, rotation);
+                // 子猫のアニメーターを取得
+                // （歩く、アイドルのアニメーションを制御するため）
                 animator = spawnedObject.GetComponent<Animator>();
+                // 子猫のリジッドボディを取得
+                // （位置や回転を制御するため）
                 rb = spawnedObject.GetComponent<Rigidbody>();
             }
             else
@@ -126,11 +131,12 @@ public class PlaceObject : MonoBehaviour
         }
     }
 
-    // 回転アニメーションをリセットする
+    // アニメーションをリセットする
     void ResetRotateAnim()
     {
         // 回転アニメーション残り時間を0にすると回転は行わない
         rotateDelta = 0.0f;
+        // アイドル状態のアニメーションに戻す
         animator.SetFloat("MoveSpeed", 0.0f);
     }
 
@@ -173,29 +179,41 @@ public class PlaceObject : MonoBehaviour
         return false;
     }
 
+    // 一定時間ごとに呼び出される
     private void FixedUpdate()
     {
+        // 子猫が目的の位置まで移動するのにかかる時間が0になるまで動かす
         if (arrivalTime > 0.0f)
         {
+            // 子猫が目的の位置まで移動するのにかかる時間を経過時間分減らす
             arrivalTime -= Time.deltaTime;
             if (arrivalTime < Mathf.Epsilon)
             {
+                // 子猫が目的の位置まで移動するのにかかる時間が0になったら移動をやめる
                 ResetRotateAnim();
                 isMoving = false;
             }
         }
     }
 
+    // 指定位置に子猫を移動させる
     public void MoveTo(Vector3 pos)
     {
         Vector3 planePos = pos;
+        // 水平方向は現在位置のままにする
         planePos.y = rb.transform.position.y;
+        // 子猫の向きを移動先の方に向ける
         rb.transform.LookAt(planePos);
+        // 現在位置から移動先までのベクトルを求める
         Vector3 distanceVec = planePos - rb.transform.position;
+        // 現在位置から移動先までの距離を求める
         float distance = distanceVec.magnitude;
+        // 移動中フラグを立てる
         isMoving = true;
+        // 移動スピード（歩く）を設定
         speed = 0.2f;
         animator.SetFloat("MoveSpeed", speed);
+        // 指定位置まで移動するのにかかる時間を求める
         arrivalTime = distance / speed;
     }
 

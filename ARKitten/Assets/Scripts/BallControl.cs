@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
+    // ボールオブジェクトのプレハブ
     public GameObject ballObject;
+    // 子猫の配置用オブジェクト
     public PlaceObject placeObject;
 
     // Start is called before the first frame update
@@ -21,10 +23,16 @@ public class BallControl : MonoBehaviour
         {
             return;
         }
+        // 画面上のタッチ座標を取得
         Vector3 pos = touchPosition;
+        // 画面上の2D座標（スクリーン座標）を画面の少し奥（カメラのニアクリップ面より先）に設定
         pos.z = Camera.main.nearClipPlane * 2.0f;
+        // スクリーン座標をワールド座標（３次元空間の中の位置）に変換
         var position = Camera.main.ScreenToWorldPoint(pos);
+        // ボールのオブジェクトを生成
         GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
+        // ボールのオブジェクトと子猫の配置オブジェクトを関連付ける
+        // （ボールが平面に当たった時に子猫に反応する命令を出せるようにするため）
         obj.GetComponent<BallOperation>().placeObject = placeObject;
     }
 
