@@ -211,7 +211,14 @@ public class PlaceObject : MonoBehaviour
         // 移動中フラグを立てる
         isMoving = true;
         // 移動スピード（歩く）を設定
-        speed = 0.2f;
+        if (distance > 1.0f)
+        {
+            speed = 0.7f;
+        }
+        else
+        {
+            speed = 0.2f;
+        }
         animator.SetFloat("MoveSpeed", speed);
         // 指定位置まで移動するのにかかる時間を求める
         arrivalTime = distance / speed;
