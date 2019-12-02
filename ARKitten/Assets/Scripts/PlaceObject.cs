@@ -13,7 +13,7 @@ public class PlaceObject : MonoBehaviour
     public GameObject floorPlane; // プレイモード用の床面
     public float rotateDuration = 3.0f; // 回転所要時間
     public float delayTime = 3.0f; // 回転を始めるまでの時間
-    
+
     GameObject spawnedObject; // 配置モデルのプレハブから生成されたオブジェクト
     // ARRaycastManagerは画面をタッチした先に伸ばしたレイと平面の衝突を検知する
     ARRaycastManager raycastManager;
@@ -211,7 +211,14 @@ public class PlaceObject : MonoBehaviour
         // 移動中フラグを立てる
         isMoving = true;
         // 移動スピード（歩く）を設定
-        speed = 0.2f;
+        if (distance > 1.0f)
+        {
+            speed = 0.7f;
+        }
+        else
+        {
+            speed = 0.2f;
+        }
         animator.SetFloat("MoveSpeed", speed);
         // 指定位置まで移動するのにかかる時間を求める
         arrivalTime = distance / speed;
