@@ -18,11 +18,11 @@ public class BallControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // タッチされていない場合は処理をぬける
-        if (!TryGetTouchPosition(out Vector2 touchPosition))
-        {
-            return;
-        }
+
+    }
+
+    public void OnTouch(Vector2 touchPosition)
+    {
         // 画面上のタッチ座標を取得
         Vector3 pos = touchPosition;
         // 画面上の2D座標（スクリーン座標）を画面の少し奥（カメラのニアクリップ面より先）に設定

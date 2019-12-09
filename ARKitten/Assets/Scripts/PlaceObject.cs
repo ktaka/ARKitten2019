@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 // AR Foundationを使用する際は次の2つのusingを追加する
@@ -28,9 +29,16 @@ public class PlaceObject : MonoBehaviour
     float arrivalTime; // 子猫が目的の位置まで移動するのにかかる時間
     float speed; // 子猫の移動スピード
 
+    public static event Action onPlacedObject;
+
     // 起動時に1度呼び出される
     void Start()
     {
+#if UNITY_EDITOR
+        useAR = false;
+#else
+        useAR = true;
+#endif
         // オブジェクトに追加されているARRaycastManagerコンポーネントを取得
         raycastManager = GetComponent<ARRaycastManager>();
 
@@ -65,13 +73,10 @@ public class PlaceObject : MonoBehaviour
                 rotateDelta -= Time.deltaTime;
             }
         }
+    }
 
-        // タッチされていない場合は処理をぬける
-        if (!TryGetTouchPosition(out Vector2 touchPosition))
-        {
-            return;
-        }
-
+    public void OnTouch(Vector2 touchPosition)
+    {
         if (HitTest(touchPosition, out Pose hitPose))
         { // タッチした先に平面がある場合
             // モデル（子猫）を配置する位置からカメラへの方向のベクトルを求めて
@@ -87,6 +92,11 @@ public class PlaceObject : MonoBehaviour
                 // 子猫のリジッドボディを取得
                 // （位置や回転を制御するため）
                 rb = spawnedObject.GetComponent<Rigidbody>();
+
+                if (onPlacedObject != null)
+                {
+                    onPlacedObject();
+                }
             }
             else
             { // 配置するモデルが生成済みの場合
