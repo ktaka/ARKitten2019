@@ -1,9 +1,28 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2019年12月号](http://gihyo.jp/magazine/SD/archive/2019/201912)の記事での完成状態がコミットされています。
+masterブランチには[2020年1月号](http://gihyo.jp/magazine/SD/archive/2020/202001)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
+
+## 2020年1月号
+
+### 誌面掲載ソースコードの全文
+- [BallControlスクリプトのRaycast対応（差分表示）](https://github.com/ktaka/ARKitten2019/commit/173b30e3cac14699165058992c404b95727bdc6e#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202001r2/ARKitten/Assets/Scripts/BallControl.cs)
+
+- [BallOperationスクリプトのイベント対応（差分表示）](https://github.com/ktaka/ARKitten2019/commit/173b30e3cac14699165058992c404b95727bdc6e#diff-b6b6d71d3b256e23f6770bb5234920c2)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202001r2/ARKitten/Assets/Scripts/BallOperation.cs)
+
+- [CameraControlスクリプト](https://github.com/ktaka/ARKitten2019/blob/202001r2/ARKitten/Assets/Scripts/CameraControl.cs)
+
+- [PlaceObjectスクリプトに子猫が走る機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f8e4f33e33e0d4e82e449a795dad37f0fbb631e9#diff-edc75b09adb2b481f7fd694404d9495d)
+  - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202001r2/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+### 動画解説
+- [スマートフォンでの実行時の動画](https://youtu.be/reDrOik5acM)
+
+---
 
 ## 2019年12月号
 
@@ -27,6 +46,7 @@ masterブランチには[2019年12月号](http://gihyo.jp/magazine/SD/archive/20
 ### 動画解説
 - [スマートフォンでの実行時の動画](https://youtu.be/iByN_FFv370)
 
+---
 
 ## 2019年11月号
 [2019年11月号](http://gihyo.jp/magazine/SD/archive/2019/201911)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201911r)にあります。
