@@ -210,13 +210,15 @@ public class PlaceObject : MonoBehaviour
         float distance = distanceVec.magnitude;
         // 移動中フラグを立てる
         isMoving = true;
-        // 移動スピード（歩く）を設定
+        // 移動する距離が1mを超える場合は走るようにする
         if (distance > 1.0f)
         {
+            // 移動スピード（走る）を設定
             speed = 0.7f;
         }
         else
         {
+            // 移動スピード（歩く）を設定
             speed = 0.2f;
         }
         animator.SetFloat("MoveSpeed", speed);

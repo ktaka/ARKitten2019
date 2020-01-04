@@ -13,9 +13,12 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+// エディタで実行時のみ有効なコード
 #if UNITY_EDITOR
+        // 左シフトキーを押しているとき
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            // マウスの縦と横の動きを回転に割り当てる
             float x = Input.GetAxis("Mouse X");
             float y = Input.GetAxis("Mouse Y");
             transform.Rotate(y, -x, 0);
