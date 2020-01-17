@@ -1,11 +1,34 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年1月号](http://gihyo.jp/magazine/SD/archive/2020/202001)の記事での完成状態がコミットされています。
+masterブランチには[2020年2月号](http://gihyo.jp/magazine/SD/archive/2020/202002)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年2月号
+
+### リソース
+- [AR Foundationのサンプル集（AR Foundation 2.1系）をダウンロード](https://github.com/Unity-Technologies/arfoundation-samples/archive/2.1.zip)
+
+- [PlanePatternPadテクスチャ](https://github.com/ktaka/ARKitten2019/raw/202002r/ARKitten/Assets/Materials/PlanePatternPawPad.png)
+
+### 誌面掲載ソースコードの全文
+- [ARFeatheredPlaneMeshVisualizerスクリプト（日本語解説つき）](https://github.com/ktaka/ARKitten2019/blob/202002r/ARKitten/Assets/Scripts/ARFeatheredPlaneMeshVisualizer.cs)
+
+- [FadePlaneOnBoundaryChangeスクリプト（日本語解説つき）](https://github.com/ktaka/ARKitten2019/blob/202002r/ARKitten/Assets/Scripts/FadePlaneOnBoundaryChange.cs)
+
+- [PlaceObjectスクリプトにUI制御機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/b7273f8169b01609072e9b5d8b37e505cab6f9c4#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202002r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [BallControlスクリプトのUI修正（差分表示）](https://github.com/ktaka/ARKitten2019/commit/b7273f8169b01609072e9b5d8b37e505cab6f9c4#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202002r/ARKitten/Assets/Scripts/BallControl.cs)
+
+- [UI Managerスクリプト](https://github.com/ktaka/ARKitten2019/blob/202002r/ARKitten/Assets/Scripts/UIManager.cs)
+
+---
+
 ## 2020年1月号
+[2020年1月号](http://gihyo.jp/magazine/SD/archive/2020/202001)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202001r2)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [BallControlスクリプトのRaycast対応（差分表示）](https://github.com/ktaka/ARKitten2019/commit/173b30e3cac14699165058992c404b95727bdc6e#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
@@ -25,6 +48,7 @@ masterブランチには[2020年1月号](http://gihyo.jp/magazine/SD/archive/202
 ---
 
 ## 2019年12月号
+[2019年11月号](http://gihyo.jp/magazine/SD/archive/2019/201912)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/201912r)にあります。
 
 ### 誌面掲載ソースコードの全文
 - [PlaceObjectのタップ処理を2本指にする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/0b37ae7a57c8994fdf3f9a1fcf6d547c92e4f7bc#diff-edc75b09adb2b481f7fd694404d9495d)
