@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -74,6 +76,29 @@ public class UIManager : MonoBehaviour
     // "Move Device Slowly"（端末をゆっくり動かす）ガイドの表示中を示すフラグ
     bool m_ShowingMoveDevice = true;
 
+    int selectedIdx;  // Dropdownで選択されたインデックス
+
+    // 起動時に1度呼び出される
+    void Start()
+    {
+#if UNITY_EDITOR // Unityのエディタで実行する場合
+        if (moveDeviceAnimation)
+            moveDeviceAnimation.SetTrigger(k_FadeOffAnim);
+
+        // "Tap to Place" ガイドのアニメーションを表示する
+        if (tapToPlaceAnimation)
+            tapToPlaceAnimation.SetTrigger(k_FadeOnAnim);
+
+        m_ShowingTapToPlace = true;
+        m_ShowingMoveDevice = false;
+#endif
+    }
+
+    public void OnValueChanged(int idx) {
+        Debug.Log("OnValueChanged=" + idx);
+        selectedIdx = idx;
+    }
+
     // オブジェクトが有効になった時に呼び出される
     void OnEnable()
     {
@@ -144,8 +169,15 @@ public class UIManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         // Unityエディターで実行される場合
+
         if (Input.GetMouseButtonDown(0))
         {
+            if(EventSystem.current.IsPointerOverGameObject()) {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;
+            }
+            //
             // マウスボタンが押された位置を取得する
             var mousePosition = Input.mousePosition;
             touchPosition = new Vector2(mousePosition.x, mousePosition.y);
@@ -155,6 +187,11 @@ public class UIManager : MonoBehaviour
         // スマートフォンで実行される場合
         if (Input.touchCount == 1)
         {
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;                
+            }
             var touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began) {
                 // 画面がタッチされた位置を取得する
@@ -188,8 +225,24 @@ public class UIManager : MonoBehaviour
             {
                 // "Tap to Place" ガイドが表示中ではないならば
                 // ボールのオブジェクトを配置する
-                ballControl.OnTouch(touchPosition);
+                // ballControl.OnTouch(touchPosition);
+                SelectControl(selectedIdx, touchPosition);
             }
+        }
+    }
+
+    void SelectControl(int idx, Vector2 touchPosition) 
+    {
+        switch (idx)
+        {
+            case 0:
+                placeObject.OnTouch(touchPosition);
+                break;
+            case 1:
+                break;
+            case 2:
+                ballControl.OnTouch(touchPosition);
+                break;
         }
     }
 }
