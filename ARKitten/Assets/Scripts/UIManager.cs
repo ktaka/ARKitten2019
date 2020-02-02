@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
 
 public class UIManager : MonoBehaviour
@@ -164,6 +165,13 @@ public class UIManager : MonoBehaviour
         // Unityエディターで実行される場合
         if (Input.GetMouseButtonDown(0))
         {
+            // UI要素をタップした際はAR空間のオブジェクトへのタップ通知が届かないようにする
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;
+            }
             // マウスボタンが押された位置を取得する
             var mousePosition = Input.mousePosition;
             touchPosition = new Vector2(mousePosition.x, mousePosition.y);
@@ -173,6 +181,12 @@ public class UIManager : MonoBehaviour
         // スマートフォンで実行される場合
         if (Input.touchCount == 1)
         {
+            // UI要素をタップした際はAR空間のオブジェクトへのタップ通知が届かないようにする
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;
+            }
             var touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began) {
                 // 画面がタッチされた位置を取得する
