@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
 
 public class UIManager : MonoBehaviour
@@ -73,6 +74,24 @@ public class UIManager : MonoBehaviour
 
     // "Move Device Slowly"（端末をゆっくり動かす）ガイドの表示中を示すフラグ
     bool m_ShowingMoveDevice = true;
+
+    int selectedIdx;  // Dropdownで選択されたインデックス
+
+    // 起動時に1度呼び出される
+    void Start()
+    {
+#if UNITY_EDITOR // Unityのエディタで実行する場合
+        if (moveDeviceAnimation)
+            moveDeviceAnimation.SetTrigger(k_FadeOffAnim);
+
+        // "Tap to Place" ガイドのアニメーションを表示する
+        if (tapToPlaceAnimation)
+            tapToPlaceAnimation.SetTrigger(k_FadeOnAnim);
+
+        m_ShowingTapToPlace = true;
+        m_ShowingMoveDevice = false;
+#endif
+    }
 
     // オブジェクトが有効になった時に呼び出される
     void OnEnable()
@@ -146,6 +165,13 @@ public class UIManager : MonoBehaviour
         // Unityエディターで実行される場合
         if (Input.GetMouseButtonDown(0))
         {
+            // UI要素をタップした際はAR空間のオブジェクトへのタップ通知が届かないようにする
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;
+            }
             // マウスボタンが押された位置を取得する
             var mousePosition = Input.mousePosition;
             touchPosition = new Vector2(mousePosition.x, mousePosition.y);
@@ -155,6 +181,12 @@ public class UIManager : MonoBehaviour
         // スマートフォンで実行される場合
         if (Input.touchCount == 1)
         {
+            // UI要素をタップした際はAR空間のオブジェクトへのタップ通知が届かないようにする
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                touchPosition = default;
+                Debug.Log("IsPointerOverGameObject");
+                return false;
+            }
             var touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began) {
                 // 画面がタッチされた位置を取得する
@@ -187,9 +219,32 @@ public class UIManager : MonoBehaviour
             } else
             {
                 // "Tap to Place" ガイドが表示中ではないならば
-                // ボールのオブジェクトを配置する
-                ballControl.OnTouch(touchPosition);
+                // Dropdownで選択中の要素に対応する機能が呼び出される
+                SelectControl(selectedIdx, touchPosition);
             }
+        }
+    }
+
+    // Dropdownの要素が選択された時に呼び出される
+    // 引数のidxに選択された番号が渡される
+    public void OnValueChanged(int idx)
+    {
+        selectedIdx = idx;
+    }
+
+    // Dropdownで選択中の要素に対応する機能が呼び出す
+    void SelectControl(int idx, Vector2 touchPosition)
+    {
+        switch (idx)
+        {
+            case 0: // 子猫を配置する
+                placeObject.OnTouch(touchPosition);
+                break;
+            case 1: // ご飯をあげる（未実装）
+                break;
+            case 2: // ボールを配置して投げる
+                ballControl.OnTouch(touchPosition);
+                break;
         }
     }
 }

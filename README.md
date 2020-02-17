@@ -1,11 +1,31 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年2月号](http://gihyo.jp/magazine/SD/archive/2020/202002)の記事での完成状態がコミットされています。
+masterブランチには[2020年3月号](http://gihyo.jp/magazine/SD/archive/2020/202003)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年3月号
+
+### リソース
+
+- [Dropdown用のアイコンをダウンロード](https://github.com/ktaka/ARKitten2019/raw/202003r/dropdown_icon.unitypackage)
+
+### 誌面掲載ソースコードの全文
+
+- [UIManagerスクリプトにDropdownのコールバックを追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/ebe39c6e757ff44f0be00781bf08884ed9a45b1a#diff-1bc3ba85714110219306dc15bb756ead)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202003_part1/ARKitten/Assets/Scripts/UIManager.cs)
+
+- [UIManagerスクリプトのタップ処理を修正する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/dc6564e26466b5bf0f448bf72eba25460e4c46b7#diff-1bc3ba85714110219306dc15bb756ead)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202003r/ARKitten/Assets/Scripts/UIManager.cs)
+
+- [BallControlスクリプトにレイヤ指定を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/dc6564e26466b5bf0f448bf72eba25460e4c46b7#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202003r/ARKitten/Assets/Scripts/BallControl.cs)
+
+---
+
 ## 2020年2月号
+[2020年2月号](http://gihyo.jp/magazine/SD/archive/2020/202002)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202002r)にあります。
 
 ### リソース
 - [AR Foundationのサンプル集（AR Foundation 2.1系）をダウンロード](https://github.com/Unity-Technologies/arfoundation-samples/archive/2.1.zip)

@@ -37,6 +37,7 @@ public class BallControl : MonoBehaviour
             var position = Camera.main.ScreenToWorldPoint(pos);
             // ボールのオブジェクトを生成
             GameObject obj = Instantiate(ballObject, position, Quaternion.identity);
+            obj.layer = 8; // layer: AR Object
             // ボールのオブジェクトと子猫の配置オブジェクトを関連付ける
             // （ボールが平面に当たった時に子猫に反応する命令を出せるようにするため）
             obj.GetComponent<BallOperation>().placeObject = placeObject;
