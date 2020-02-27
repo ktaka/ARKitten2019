@@ -25,6 +25,13 @@ public class CatControl : MonoBehaviour, IDragHandler
         }
     }
 
+    // オブジェクトが接触した時に呼び出される
+    void OnTriggerEnter(Collider co)
+    {
+        // 走る or 歩くアニメーションと移動を止める
+        GetComponent<Animator>().SetFloat("MoveSpeed", 0.0f);
+    }
+
     // 最初に1回だけ呼び出される（最初のUpdateの前）
     void Start()
     {
