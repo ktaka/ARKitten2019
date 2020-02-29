@@ -7,6 +7,8 @@ masterブランチには[2020年4月号](http://gihyo.jp/magazine/SD/archive/202
 
 ## 2020年4月号
 
+- [スマートフォンでの実行時の動画](https://youtu.be/3XxeNConOC0)
+
 ### 誌面掲載ソースコードの全文
 
 #### なでる操作
