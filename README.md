@@ -1,11 +1,36 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年3月号](http://gihyo.jp/magazine/SD/archive/2020/202003)の記事での完成状態がコミットされています。
+masterブランチには[2020年4月号](http://gihyo.jp/magazine/SD/archive/2020/202004)の記事での完成状態がコミットされています。
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年4月号
+
+- [スマートフォンでの実行時の動画](https://youtu.be/3XxeNConOC0)
+
+### 誌面掲載ソースコードの全文
+
+#### なでる操作
+
+- [CatControlスクリプト](https://github.com/ktaka/ARKitten2019/blob/202004r_part1/ARKitten/Assets/Scripts/CatControl.cs)
+
+#### ごはんをあげる操作
+
+- [FoodOperationスクリプト](https://github.com/ktaka/ARKitten2019/blob/202004r/ARKitten/Assets/Scripts/FoodOperation.cs)
+
+- [FoodControlスクリプト](https://github.com/ktaka/ARKitten2019/blob/202004r/ARKitten/Assets/Scripts/FoodControl.cs)
+
+- [UIManagerでごはんをあげる操作を選択できるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/ba02a70cddfa616dc9f1ff3c4385dd0ccae0db6e#diff-1bc3ba85714110219306dc15bb756ead)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202004r/ARKitten/Assets/Scripts/UIManager.cs)
+
+- [CatControlでごはんに接触したら動きを止める（差分表示）](https://github.com/ktaka/ARKitten2019/commit/ba02a70cddfa616dc9f1ff3c4385dd0ccae0db6e#diff-39b62311bbe2ea5e0e37aa2edc44fc5c)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202004r/ARKitten/Assets/Scripts/CatControl.cs)
+
+---
+
 ## 2020年3月号
+[2020年3月号](http://gihyo.jp/magazine/SD/archive/2020/202003)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202003r)にあります。
 
 ### リソース
 

@@ -66,6 +66,7 @@ public class UIManager : MonoBehaviour
 
     public PlaceObject placeObject;  // 子猫を配置するスクリプトコンポーネント
     public BallControl ballControl;  // ボールを配置するスクリプトコンポーネント
+    public FoodControl foodControl;  // ごはんを配置するスクリプトコンポーネント
 
     static List<ARPlane> s_Planes = new List<ARPlane>();
 
@@ -240,7 +241,8 @@ public class UIManager : MonoBehaviour
             case 0: // 子猫を配置する
                 placeObject.OnTouch(touchPosition);
                 break;
-            case 1: // ご飯をあげる（未実装）
+            case 1: // ご飯をあげる
+                foodControl.OnTouch(touchPosition);
                 break;
             case 2: // ボールを配置して投げる
                 ballControl.OnTouch(touchPosition);
