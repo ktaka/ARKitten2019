@@ -88,6 +88,12 @@ public class BallOperation : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
     // オブジェクトの衝突があった際に呼び出される
     private void OnCollisionEnter(Collision collision)
     {
+        if (CatPreferences.IsStarving())
+        {
+            // おなかが空いている時は反応しない
+            return;
+        }
+
         collisionCount++;
         // 2回以上衝突した場合
         if (collisionCount > 1)
@@ -95,6 +101,8 @@ public class BallOperation : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
             // 子猫をボールの衝突位置まで動かす
             placeObject.MoveTo(transform.position);
             collisionCount = 0;
+            // ボール遊びをした回数を増やして記録する
+            CatPreferences.addBallPlayingNum();
         }
     }
 }

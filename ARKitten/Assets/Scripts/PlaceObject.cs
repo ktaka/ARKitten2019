@@ -54,6 +54,7 @@ public class PlaceObject : MonoBehaviour
         arSession = GetComponent<ARSessionOrigin>();
     }
 
+    public int frameNo;
     // フレーム毎に呼び出される
     void Update()
     {
@@ -76,6 +77,7 @@ public class PlaceObject : MonoBehaviour
                 rotateDelta -= Time.deltaTime;
             }
         }
+        frameNo++;
     }
 
     // 画面がタッチされた際にUIManagerから呼び出される
@@ -127,6 +129,11 @@ public class PlaceObject : MonoBehaviour
     // 配置オブジェクトの向きとカメラへの方向をチェックして回転に必要な値を求める
     void CheckObjDirection()
     {
+        if (CheckTemper())
+        {
+            // 子猫の機嫌が良くない場合は向きを変えるアニメーションをしない
+            return;
+        }
         // 配置オブジェクトの向きのベクトルを得る
         Vector3 catDirVector = rb.transform.forward;
         // 配置オブジェクトからカメラへの方向のベクトルを得る
@@ -144,6 +151,42 @@ public class PlaceObject : MonoBehaviour
             // （回転を始めるまでの時間分遅れて回転を始めるため）
             rotateDelta = rotateDuration + delayTime;
         }
+    }
+
+    double setItchingTime;
+    bool CheckTemper()
+    {
+        int elapsedTime = (int)(CatPreferences.ElapsedSecondsFromLastCared);
+        if (CatPreferences.ElapsedSecondsFromLastCared < setItchingTime)
+        {
+            setItchingTime = 0;
+        }
+        // 前回かまってから20秒たつごとに処理を行う
+        if ((CatPreferences.ElapsedSecondsFromLastCared - setItchingTime) > 20.0 && elapsedTime > 0 && elapsedTime % 20 == 0)
+        {
+            // 機嫌が良くない時のアニメーション（シャカシャカする）に遷移する
+            animator.SetTrigger("Itching");
+            setItchingTime = CatPreferences.ElapsedSecondsFromLastCared;
+            return false;
+        }
+        // 子猫の機嫌が良く、かつ動いていない場合に処理を行う
+        if (CatPreferences.IsGoodTemper() && !isMoving)
+        {
+            // メインカメラの位置（端末を持っているプレイヤーの位置）
+            Vector3 cameraPos = Camera.main.transform.position;
+            // 取得した位置の高さを子猫の位置の高さに合わせる
+            cameraPos.y = rb.transform.position.y;
+            // 子猫とプレイヤーの距離を求める
+            float dist = (cameraPos - rb.transform.position).magnitude;
+            // 距離が1mより大きければ行う処理
+            if (dist > 1.0f)
+            {
+                // プレイヤーの手前（-0.5の位置）まで移動させる
+                MoveTo(cameraPos, -0.5f);
+            }
+            return false;
+        }
+        return true;
     }
 
     // アニメーションをリセットする
@@ -187,7 +230,7 @@ public class PlaceObject : MonoBehaviour
     }
 
     // 指定位置に子猫を移動させる
-    public void MoveTo(Vector3 pos)
+    public void MoveTo(Vector3 pos, float offset = 0.0f)
     {
         Vector3 planePos = pos;
         // 水平方向は現在位置のままにする
@@ -197,7 +240,7 @@ public class PlaceObject : MonoBehaviour
         // 現在位置から移動先までのベクトルを求める
         Vector3 distanceVec = planePos - rb.transform.position;
         // 現在位置から移動先までの距離を求める
-        float distance = distanceVec.magnitude;
+        float distance = distanceVec.magnitude + offset;
         // 移動中フラグを立てる
         isMoving = true;
         // 移動する距離が1mを超える場合は走るようにする

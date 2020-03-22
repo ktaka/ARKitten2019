@@ -12,7 +12,6 @@ public class CatControl : MonoBehaviour, IDragHandler
     // ドラッグイベントが発生した時に呼び出される
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Dragging");
         // ドラッグ回数を数える
         strokingNum++;
         // ドラッグ回数が閾値を超えた際はなでたと判定する
@@ -22,6 +21,8 @@ public class CatControl : MonoBehaviour, IDragHandler
             GetComponent<Animator>().SetTrigger("Sit");
             // ドラッグ回数は初期化する
             strokingNum = 0;
+            // なでた回数を増やして記録する
+            CatPreferences.addStrokingNum();
         }
     }
 
