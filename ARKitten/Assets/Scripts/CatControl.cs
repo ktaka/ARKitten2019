@@ -22,6 +22,8 @@ public class CatControl : MonoBehaviour, IDragHandler
             GetComponent<Animator>().SetTrigger("Sit");
             // ドラッグ回数は初期化する
             strokingNum = 0;
+            // なでた回数を増やして記録する
+            CatPreferences.addStrokingNum();
         }
     }
 

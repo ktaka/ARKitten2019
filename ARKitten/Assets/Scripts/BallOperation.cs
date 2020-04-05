@@ -88,6 +88,11 @@ public class BallOperation : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
     // オブジェクトの衝突があった際に呼び出される
     private void OnCollisionEnter(Collision collision)
     {
+        if (CatPreferences.IsStarving())
+        {
+            // おなかが空いている時は反応しない
+            return;
+        }
         collisionCount++;
         // 2回以上衝突した場合
         if (collisionCount > 1)
