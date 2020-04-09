@@ -121,8 +121,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1
-  preloadedAssets:
-  - {fileID: 4800000, guid: e7c77f6eaab324a819efdc13b8125a39, type: 3}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -166,7 +165,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.example.arkitten
-    iPhone: app.ktaka.arkitten
+    iPhone: com.example.arkitten
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 24
