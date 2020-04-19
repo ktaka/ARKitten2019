@@ -1,11 +1,36 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年4月号](http://gihyo.jp/magazine/SD/archive/2020/202004)の記事での完成状態がコミットされています。
+masterブランチには[2020年5月号](http://gihyo.jp/magazine/SD/archive/2020/202005)の記事での完成状態がコミットされています。
+ビルドする際には次の2つのアセットをインポートしてください。
+
+- [Yughues Free Fabric Materials（ボールのマテリアルに使用）](https://assetstore.unity.com/packages/2d/textures-materials/fabric/yughues-free-fabric-materials-13002)
+- [FREE Casual Food Pack（子猫に上げるご飯に使用）](https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884)
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年5月号
+
+### 誌面掲載ソースコードの全文
+
+- [CatPreferencesスクリプト](https://github.com/ktaka/ARKitten2019/blob/202005r/ARKitten/Assets/Scripts/CatPreferences.cs)
+
+- [BallOperationで経験値を読み書きできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-b6b6d71d3b256e23f6770bb5234920c2)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202005r/ARKitten/Assets/Scripts/BallOperation.cs)
+
+- [CatControlで経験値を保存できるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-39b62311bbe2ea5e0e37aa2edc44fc5c)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202005r/ARKitten/Assets/Scripts/CatControl.cs)
+
+- [FoodOperationで経験値を保存できるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-f6aeaf34b92b4fb004d561dee6096083)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202005r/ARKitten/Assets/Scripts/FoodOperation.cs)
+
+- [PlaceObjectで経験値を反映できるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202005r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+---
+
 ## 2020年4月号
+[2020年4月号](http://gihyo.jp/magazine/SD/archive/2020/202004)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202004r)にあります。
 
 - [スマートフォンでの実行時の動画](https://youtu.be/3XxeNConOC0)
 
