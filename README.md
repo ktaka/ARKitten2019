@@ -4,7 +4,8 @@
 masterブランチには[2020年5月号](http://gihyo.jp/magazine/SD/archive/2020/202005)の記事での完成状態がコミットされています。
 ビルドする際には次の2つのアセットをインポートしてください。
 
-- 
+- [Yughues Free Fabric Materials（ボールのマテリアルに使用）](https://assetstore.unity.com/packages/2d/textures-materials/fabric/yughues-free-fabric-materials-13002)
+- [FREE Casual Food Pack（子猫に上げるご飯に使用）](https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884)
 
 <img src="ARKitten2019.jpg" width="420px">
 
