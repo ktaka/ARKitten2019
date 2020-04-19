@@ -3,7 +3,7 @@
 
 masterブランチには[2020年5月号](http://gihyo.jp/magazine/SD/archive/2020/202005)の記事での完成状態がコミットされています。
 ビルドする際には次の2つのアセットをインポートしてください。
-- 
+
 - 
 
 <img src="ARKitten2019.jpg" width="420px">
