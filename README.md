@@ -2,7 +2,7 @@
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
 masterブランチには[2020年6月号](http://gihyo.jp/magazine/SD/archive/2020/202006)の記事での完成状態がコミットされています。
-ビルドする際には次の2つのアセットをインポートしてください。
+ビルドする際には次の3つのアセットをインポートしてください。
 
 - [Yughues Free Fabric Materials（ボールのマテリアルに使用）](https://assetstore.unity.com/packages/2d/textures-materials/fabric/yughues-free-fabric-materials-13002)
 - [FREE Casual Food Pack（子猫に上げるご飯に使用）](https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884)
