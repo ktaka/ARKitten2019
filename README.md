@@ -10,7 +10,7 @@ masterブランチには[2020年6月号](http://gihyo.jp/magazine/SD/archive/202
 
 <img src="ARKitten2019.jpg" width="420px">
 
-## 2020年7月号
+## 2020年6月号
 
 ### 誌面掲載ソースコードの全文
 
