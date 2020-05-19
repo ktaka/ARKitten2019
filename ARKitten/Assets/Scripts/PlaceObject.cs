@@ -5,6 +5,8 @@ using UnityEngine;
 // AR Foundationを使用する際は次の2つのusingを追加する
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+// ARCore Extensionsを使用する際に追加する
+using Google.XR.ARCoreExtensions;
 
 public class PlaceObject : MonoBehaviour
 {
@@ -15,7 +17,12 @@ public class PlaceObject : MonoBehaviour
     public float rotateDuration = 3.0f; // 回転所要時間
     public float delayTime = 3.0f; // 回転を始めるまでの時間
     public float itchingDuration = 20.0f; // シャカシャカ掻く間隔の時間（秒）
+    public GameObject shareCloudAnchorButton; // Cloud Anchorを共有するボタン
 
+    GameObject cloudAnchorInputField;
+    ARAnchorManager anchorManager;
+    ARCloudAnchor cloudAnchor;
+    string cloudAnchorId;
     GameObject spawnedObject; // 配置モデルのプレハブから生成されたオブジェクト
     // ARRaycastManagerは画面をタッチした先に伸ばしたレイと平面の衝突を検知する
     ARRaycastManager raycastManager;
@@ -46,6 +53,8 @@ public class PlaceObject : MonoBehaviour
 #endif
         // オブジェクトに追加されているARRaycastManagerコンポーネントを取得
         raycastManager = GetComponent<ARRaycastManager>();
+        // オブジェクトに追加されているARAnchorManagerコンポーネントを取得
+        anchorManager = GetComponent<ARAnchorManager>();
 
         // プレイモード用床面が設定されていて、AR使用フラグがOFFの場合は床面を表示
         if (floorPlane != null)
@@ -56,11 +65,14 @@ public class PlaceObject : MonoBehaviour
         arSession = GetComponent<ARSessionOrigin>();
         // 次にシャカシャカ掻くまでの時間をセット
         nextItchingTime = Time.time + itchingDuration;
+        // Cloud Anchorを共有するボタンは非表示にしておく
+        shareCloudAnchorButton.SetActive(false);
     }
 
     // フレーム毎に呼び出される
     void Update()
     {
+        CloudAnchorProcess();
         // 移動中フラグが立っている場合は回転しない
         if (spawnedObject != null && isMoving == false)
         {
@@ -82,8 +94,110 @@ public class PlaceObject : MonoBehaviour
         }
     }
 
+    enum CloudAnchorProcessMode
+    {
+        WaitingForHosttedCloudAnchor,
+        WaitingForResolvedCloudAnchor,
+        WaitingForNoOne
+    }
+    CloudAnchorProcessMode cloudAnchorMode = CloudAnchorProcessMode.WaitingForNoOne;
+
+    void CloudAnchorProcess()
+    {
+        if (cloudAnchorMode == CloudAnchorProcessMode.WaitingForNoOne)
+        {
+            return;
+        }
+        if (cloudAnchor != null)
+        {
+            CloudAnchorState cloudAnchorState = cloudAnchor.cloudAnchorState;
+            if (cloudAnchorMode == CloudAnchorProcessMode.WaitingForHosttedCloudAnchor)
+            {
+                if (cloudAnchorState == CloudAnchorState.Success)
+                {
+                    shareCloudAnchorButton.SetActive(true);
+                    cloudAnchorId = cloudAnchor.cloudAnchorId;
+                    shareCloudAnchorButton.GetComponent<ShareCloudAnchor>().cloudAnchorID = cloudAnchorId;
+                    cloudAnchor = null;
+                    cloudAnchorMode = CloudAnchorProcessMode.WaitingForNoOne;
+                }
+            }
+            else if (cloudAnchorMode == CloudAnchorProcessMode.WaitingForResolvedCloudAnchor)
+            {
+                Debug.Log("WaitingForResolvedCloudAnchor " + cloudAnchorState);
+                if (cloudAnchorState == CloudAnchorState.Success)
+                {
+                    Debug.Log("===>Success to Resolve Anchor ID");
+                    PlaceWithTransform(cloudAnchor.transform);
+                    cloudAnchorInputField.SetActive(false);
+                    cloudAnchor = null;
+                    cloudAnchorMode = CloudAnchorProcessMode.WaitingForNoOne;
+                }
+            }
+        }
+    }
+
+    void PlaceWithTransform(Transform t)
+    {
+        if (spawnedObject == null)
+        { // 配置用モデルが未生成の場合
+          // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
+            spawnedObject = Instantiate(placedPrefab, t.position, t.rotation);
+            // 子猫のアニメーターを取得
+            // （歩く、アイドルのアニメーションを制御するため）
+            animator = spawnedObject.GetComponent<Animator>();
+            // 子猫のリジッドボディを取得
+            // （位置や回転を制御するため）
+            rb = spawnedObject.GetComponent<Rigidbody>();
+            // 
+            if (onPlacedObject != null)
+            {
+                // オブジェクトが配置されたことを知らせるコールバックを呼び出す
+                onPlacedObject();
+            }
+        }
+        else
+        { // 配置するモデルが生成済みの場合
+          // 配置用モデルの位置をレイが平面に衝突した位置にする
+            rb.position = t.position;
+            // 配置用モデルを回転させてカメラの方に向ける
+            rb.rotation = t.rotation;
+        }
+    }
+
+    public void ResolveAnchor(string id, GameObject uiObject)
+    {
+        Debug.Log("===>Resolve Anchor ID=" + id);
+        cloudAnchor = anchorManager.ResolveCloudAnchorId(id);
+        if (cloudAnchor == null)
+        {
+            Debug.Log("Failed to resolve Cloud Anchor.");
+        }
+        else
+        {
+            cloudAnchorInputField = uiObject;
+            cloudAnchorMode = CloudAnchorProcessMode.WaitingForResolvedCloudAnchor;
+        }
+    }
+
+    public void AddCloudAnchor(Pose pose)
+    {
+        shareCloudAnchorButton.SetActive(false);
+        ARAnchor anchor = anchorManager.AddAnchor(pose);
+        cloudAnchor = anchorManager.HostCloudAnchor(anchor);
+        if (cloudAnchor == null)
+        {
+            Debug.Log("Failed to create Cloud Anchor.");
+        }
+        else
+        {
+            cloudAnchorMode = CloudAnchorProcessMode.WaitingForHosttedCloudAnchor;
+        }
+        cloudAnchorId = "";
+    }
+
     // 画面がタッチされた際にUIManagerから呼び出される
-    public void OnTouch(Vector2 touchPosition)
+    public void OnTouch(Vector2 touchPosition, bool addCloudAnchor = false)
     {
         if (HitTest(touchPosition, out Pose hitPose))
         { // タッチした先に平面がある場合
@@ -113,6 +227,10 @@ public class PlaceObject : MonoBehaviour
                 rb.position = hitPose.position;
                 // 配置用モデルを回転させてカメラの方に向ける
                 rb.rotation = rotation;
+            }
+            if (addCloudAnchor)
+            {
+                AddCloudAnchor(hitPose);
             }
         }
     }
