@@ -1,16 +1,40 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年6月号](http://gihyo.jp/magazine/SD/archive/2020/202006)の記事での完成状態がコミットされています。
-ビルドする際には次の3つのアセットをインポートしてください。
+masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/2020/202007)の記事での完成状態がコミットされています。
+ビルドする際には次の3つのアセットとARCore Extensions for AR Foundationパッケージをインポートしてください。
 
-- [Yughues Free Fabric Materials（ボールのマテリアルに使用）](https://assetstore.unity.com/packages/2d/textures-materials/fabric/yughues-free-fabric-materials-13002)
-- [FREE Casual Food Pack（子猫に上げるご飯に使用）](https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884)
-- [139 Vector Icons（カメラアイコンに使用）](https://assetstore.unity.com/packages/2d/gui/icons/139-vector-icons-69968)
+- アセット
+  - [Yughues Free Fabric Materials（ボールのマテリアルに使用）](https://assetstore.unity.com/packages/2d/textures-materials/fabric/yughues-free-fabric-materials-13002)
+  - [FREE Casual Food Pack（子猫に上げるご飯に使用）](https://assetstore.unity.com/packages/3d/props/food/free-casual-food-pack-mobile-vr-85884)
+  - [139 Vector Icons（カメラアイコンに使用）](https://assetstore.unity.com/packages/2d/gui/icons/139-vector-icons-69968)
+
+- パッケージ
+  - [ARCore Extensions for AR Foundation](https://developers.google.com/ar/develop/unity-arf/enable-arcore#get-package)
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年7月号
+
+### 誌面掲載URL
+- [GitHubのarcore-unity-extensionsのリリースページ (ARCore Extensions for AR Foundation)](https://github.com/google-ar/arcore-unity-extensions/releases/)
+- [ARCore Cloud Anchor APIのサイト](https://console.cloud.google.com/apis/library/arcorecloudanchor.googleapis.com)
+
+### 誌面掲載ソースコードの全文
+
+- [ShareCloudAnchorスクリプト](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/ShareCloudAnchor.cs)
+
+- [PlaceObjectでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-b6b6d71d3b256e23f6770bb5234920c2)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [UIManagerでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-b6b6d71d3b256e23f6770bb5234920c2)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/UIManager.cs)
+
+
+---
+
 ## 2020年6月号
+[2020年6月号](http://gihyo.jp/magazine/SD/archive/2020/202006)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202006)にあります。
 
 ### 誌面掲載ソースコードの全文
 
