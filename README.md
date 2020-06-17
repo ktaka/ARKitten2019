@@ -22,13 +22,13 @@ masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/202
 
 ### 誌面掲載ソースコードの全文
 
-- [ShareCloudAnchorスクリプト](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/ShareCloudAnchor.cs)
+- [ShareCloudAnchorスクリプト](https://github.com/ktaka/ARKitten2019/blob/202007d/ARKitten/Assets/Scripts/ShareCloudAnchor.cs)
 
-- [PlaceObjectでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-b6b6d71d3b256e23f6770bb5234920c2)
-    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/PlaceObject.cs)
+- [PlaceObjectでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007d/ARKitten/Assets/Scripts/PlaceObject.cs)
 
-- [UIManagerでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/41497028a50906ba27ecb6f590d639346b1f312d#diff-b6b6d71d3b256e23f6770bb5234920c2)
-    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007/ARKitten/Assets/Scripts/UIManager.cs)
+- [UIManagerでCloud Anchorを扱えるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-1bc3ba85714110219306dc15bb756ead)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202007d/ARKitten/Assets/Scripts/UIManager.cs)
 
 
 ---
