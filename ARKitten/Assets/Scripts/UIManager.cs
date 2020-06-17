@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class UIManager : MonoBehaviour
     public PlaceObject placeObject;  // 子猫を配置するスクリプトコンポーネント
     public BallControl ballControl;  // ボールを配置するスクリプトコンポーネント
     public FoodControl foodControl;  // ごはんを配置するスクリプトコンポーネント
+    public InputField CloudAnchorIdField; // Cloud Anchor ID入力フィールド
 
     static List<ARPlane> s_Planes = new List<ARPlane>();
 
@@ -92,6 +94,19 @@ public class UIManager : MonoBehaviour
         m_ShowingTapToPlace = true;
         m_ShowingMoveDevice = false;
 #endif
+        // Cloud Anchor ID入力フィールドに入力された際に呼び出されるリスナーを登録
+        CloudAnchorIdField.onEndEdit.AddListener(OnInputEndEdit);
+        // Cloud Anchor ID入力フィールドは非表示にしておく
+        CloudAnchorIdField.gameObject.SetActive(false);
+    }
+
+    // Cloud Anchor ID入力フィールドに入力された際に呼び出されるリスナー
+    void OnInputEndEdit(string text)
+    {
+        // 入力されたIDに対応するCloud Anchorを取得する
+        //   CloudAnchorIdField.gameObjectを渡してCloud Anchor取得完了時に
+        //   入力フィールドを非表示にしてもらう
+        placeObject.ResolveAnchor(text, CloudAnchorIdField.gameObject);
     }
 
     // オブジェクトが有効になった時に呼び出される
@@ -231,6 +246,11 @@ public class UIManager : MonoBehaviour
     public void OnValueChanged(int idx)
     {
         selectedIdx = idx;
+        if (selectedIdx == 4)
+        {
+            // 4番目の要素が選択された際はCloud Anchor ID入力フィールドを表示状態にする
+            CloudAnchorIdField.gameObject.SetActive(true);
+        }
     }
 
     // Dropdownで選択中の要素に対応する機能が呼び出す
@@ -246,6 +266,9 @@ public class UIManager : MonoBehaviour
                 break;
             case 2: // ボールを配置して投げる
                 ballControl.OnTouch(touchPosition);
+                break;
+            case 3: // 子猫を配置してCloud Anchorに登録する
+                placeObject.OnTouch(touchPosition, true);
                 break;
         }
     }
