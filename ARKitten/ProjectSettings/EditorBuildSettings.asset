@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Kitten.unity
     guid: 27014623033764f58a48c36545a1674e
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 557aa8c83e9d943a084f670ab38861d3,
+      type: 2}

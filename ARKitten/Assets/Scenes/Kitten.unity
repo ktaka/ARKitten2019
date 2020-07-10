@@ -1732,7 +1732,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cloud Anchor ID
+  m_Text: Room ID
 --- !u!222 &1431304608
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2036,6 +2036,7 @@ MonoBehaviour:
   delayTime: 3
   itchingDuration: 20
   shareCloudAnchorButton: {fileID: 1991894588}
+  databaseUrl: 
 --- !u!114 &1544679005
 MonoBehaviour:
   m_ObjectHideFlags: 0
