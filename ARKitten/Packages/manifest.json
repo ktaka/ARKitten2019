@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "com.google.ar.core.arfoundation.extensions": "file:/Users/ktaka/develop/sd/202007d/package",
+    "com.google.external-dependency-manager": "1.2.156",
+    "com.google.firebase.database": "6.15.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "3.4.5",
@@ -8,7 +10,7 @@
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.ide.vscode": "1.2.0",
+    "com.unity.ide.vscode": "1.2.1",
     "com.unity.purchasing": "2.0.6",
     "com.unity.test-framework": "1.1.14",
     "com.unity.textmeshpro": "2.0.1",
@@ -48,5 +50,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "Game Package Registry by Google",
+      "url": "https://unityregistry-pa.googleapis.com",
+      "scopes": [
+        "com.google"
+      ]
+    }
+  ]
 }

@@ -14,7 +14,27 @@ masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/202
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年8月号
+
+### 誌面掲載URL
+-[EDM4Uのダウンロード](https://github.com/googlesamples/unity-jar-resolver/raw/master/external-dependency-manager-latest.unitypackage)
+
+-[UnityプロジェクトにFirebaseを追加する（公式ページ）](https://firebase.google.com/docs/unity/setup?hl=ja)
+
+-[Firebaseコンソール](https://console.firebase.google.com/)
+
+
+### 誌面掲載ソースコードの全文
+
+- [macOSで環境変数JAVA_HOMEを設定するファイル]()
+
+- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202008/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+---
+
 ## 2020年7月号
+[2020年7月号](http://gihyo.jp/magazine/SD/archive/2020/202007)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202007d)にあります。
 
 ### 誌面掲載URL
 - [GitHubのarcore-unity-extensionsのリリースページ (ARCore Extensions for AR Foundation)](https://github.com/google-ar/arcore-unity-extensions/releases/)

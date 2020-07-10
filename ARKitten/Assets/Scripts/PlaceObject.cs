@@ -8,6 +8,11 @@ using UnityEngine.XR.ARSubsystems;
 // ARCore Extensionsを使用する際に追加する
 using Google.XR.ARCoreExtensions;
 
+// Firebase Realtime Databaseを使用する際に追加する
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
+
 public class PlaceObject : MonoBehaviour
 {
     // public変数はUnityのエディタのインスペクターで設定項目として表示される
@@ -38,6 +43,11 @@ public class PlaceObject : MonoBehaviour
     float arrivalTime; // 子猫が目的の位置まで移動するのにかかる時間
     float speed; // 子猫の移動スピード
     float nextItchingTime; // 次にシャカシャカ掻くまでの時間（秒）
+
+    // for Firebase
+    public string databaseUrl; // データベースのURL
+    FirebaseApp app;
+    DatabaseReference dbRef; // データベースへのリファレンス
 
     // オブジェクト配置時に呼び出すコールバック
     public static event Action onPlacedObject;
@@ -96,6 +106,108 @@ public class PlaceObject : MonoBehaviour
         }
     }
 
+    // Firebase Realtime Databaseの構造を扱うためのクラス
+    // Room単位にCloud Anchor IDを持つためのクラス
+    public class Room
+    {
+        public string anchorId; // Cloud Anchor ID
+        public Room(string cloudAnchorId)
+        {
+            anchorId = cloudAnchorId;
+        }
+    }
+
+    // Firebase Realtime Databaseの構造を扱うためのクラス
+    // 配置するオブジェクトごとに位置と向き（回転）を持つためのクラス
+    public class PlacedObject
+    {
+        public Vector3 position; // オブジェクトの位置
+        public Quaternion rotation; // オブジェクトの向きを表す回転
+
+        public PlacedObject(Vector3 position, Quaternion rotation)
+        {
+            this.position = position;
+            this.rotation = rotation;
+        }
+    }
+
+    // Firebaseの前処理を行い、前処理が完了済みなら渡された処理を実行する
+    void SetupFirebase(Action<string> action, string key)
+    {
+        // DBのリファレンスが取得済みなら前処理は完了済みとする
+        if (dbRef != null)
+        {
+            // 渡された処理を実行する
+            action(key);
+            return;
+        }
+
+        // Google Play開発者サービスのバージョンがFirebase SDKが必要とするものかを確認
+        // 必要な場合はそのバージョンに更新する
+        // ContinueWithの先は非同期で実行される
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            // 非同期で実行される処理：確認結果が返ってきた時に実行される
+            var dependencyStatus = task.Result;
+            // Google Play開発者サービスの必要条件を満たせた時
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                // FirebaseAppのインスタンスを取得する
+                app = FirebaseApp.DefaultInstance;
+                // データベースのURLをセットする
+                app.SetEditorDatabaseUrl(databaseUrl);
+                // データベースのルートへのリファレンスを取得する
+                dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+                // 渡された処理を実行する
+                action(key);
+            }
+            else
+            {
+                // Google Play開発者サービスの必要条件を満たせなかった時はエラーとして
+                // Firebaseに関する処理は行わない
+                Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+            }
+        });
+    }
+
+    // SetupFirebaseに渡して実行される処理
+    // Firebase Realtime DatabaseにRoom情報を出力する
+    void WriteRoomInfo(string roomId)
+    {
+        // Cloud Anchor IDを含むRoom情報を作成する
+        Room room = new Room(cloudAnchorId);
+        // ひとつのRoomオブジェクトをまとめて登録するためにJSONの文字列に変換
+        string json = JsonUtility.ToJson(room);
+        // Room IDをキーとしてDBに出力する
+        dbRef.Child("rooms").Child(roomId).SetRawJsonValueAsync(json);
+        // 位置と向きを表す回転を含む配置オブジェクト情報を作成する
+        PlacedObject kittenObj = new PlacedObject(rb.position, rb.rotation);
+        // ひとつの配置オブジェクトをまとめて登録するためにJSONの文字列に変換
+        json = JsonUtility.ToJson(kittenObj);
+        // 子猫の配置情報にRoom IDをキーとしてDBに出力する
+        dbRef.Child("kitten").Child(roomId).SetRawJsonValueAsync(json);
+    }
+
+    // SetupFirebaseに渡して実行される処理
+    // Firebase Realtime DatabaseからRoom情報を読み込む
+    void ReadRoomInfo(string roomId)
+    {
+        // Room IDに対応するCloud Anchor IDを読み込む
+        // ContinueWithの先は非同期で実行される
+        dbRef.Child("rooms").Child(roomId).Child("anchorId").GetValueAsync().ContinueWith(readtask =>
+        {
+            // 非同期で実行される処理：読み込みが完了した時に実行される
+            if (readtask.IsCompleted)
+            {
+                // 読み込んだ内容を文字列に変換してCloud Anchor IDとする
+                DataSnapshot snapshot = readtask.Result;
+                string id = snapshot.Value.ToString();
+                // IDに対応するCloud Anchorを取得する
+                ResolveAnchor(id);
+            }
+        });
+    }
+
     // Cloud Anchorに関する処理モード
     enum CloudAnchorProcessMode
     {
@@ -130,6 +242,8 @@ public class PlaceObject : MonoBehaviour
                 shareCloudAnchorButton.SetActive(true);
                 // Cloud Anchor IDを取得する
                 cloudAnchorId = cloudAnchor.cloudAnchorId;
+                // Firebase Realtime DatabaseにRoom情報を出力する
+                SetupFirebase(WriteRoomInfo, "1");
                 // Cloud Anchor ID共有ボタンのスクリプトコンポーネントにIDをセットする
                 shareCloudAnchorButton.GetComponent<ShareCloudAnchor>().cloudAnchorID = cloudAnchorId;
                 // Cloud Anchorの処理は必要ないモードにする
@@ -183,14 +297,44 @@ public class PlaceObject : MonoBehaviour
         { // 配置するモデルが生成済みの場合
             // アンカーのTransformを子猫のTransformの親にして、子猫の位置と向きがアンカーの影響を受けるようにする
             rb.position = Vector3.zero;
+            spawnedObject.transform.parent = null; // 前に設定したTransformの親を外す
             spawnedObject.transform.position = Vector3.zero;
             spawnedObject.transform.SetParent(anchor.transform, false);
         }
+
+        // テスト用にRoom IDは1とする
+        string key = "1";
+        // Room IDに対応する子猫の配置情報を読み込む
+        // ContinueWithの先は非同期で実行される
+        dbRef.Child("kitten").Child(key).GetValueAsync().ContinueWith(readtask =>
+        {
+            // 非同期で実行される処理：読み込みが完了した時に実行される
+            if (readtask.IsCompleted)
+            {
+                // 読み込んだ内容から向きを表す回転の情報を取り出す
+                DataSnapshot snapshot = readtask.Result;
+                DataSnapshot childRot = snapshot.Child("rotation");
+                Debug.Log("rotation ===> " + childRot.GetRawJsonValue());
+                // JSONの文字列として取得した回転の情報（w,x,y,z）をクオータニオンのオブジェクトに変換する
+                Quaternion rot = JsonUtility.FromJson<Quaternion>(childRot.GetRawJsonValue());
+                // 子猫の回転としてセットする
+                rb.rotation = rot;
+            }
+        });
     }
 
     // IDに対応するCloud Anchorを取得する
     //   uiObjectにはCloud Anchor ID入力フィールドが渡される
-    public void ResolveAnchor(string id, GameObject uiObject)
+    public void ResolveAnchor(string key, GameObject uiObject)
+    {
+        // 正常終了時に非表示にするためRoom ID入力フィールドを保持する
+        cloudAnchorInputField = uiObject;
+        // Firebase Realtime DatabaseからRoom情報を読み取る
+        // テスト用にRoom IDは1とする
+        SetupFirebase(ReadRoomInfo, "1");
+    }
+
+    public void ResolveAnchor(string id)
     {
         Debug.Log("===>Resolve Anchor ID=" + id);
         // IDからCloud Anchorオブジェクトを取得する
@@ -203,8 +347,6 @@ public class PlaceObject : MonoBehaviour
         else
         {
             // 取得に成功した場合
-            // 正常終了時に非表示にするためCloud Anchor ID入力フィールドを保持する
-            cloudAnchorInputField = uiObject;
             // Cloud Anchorの取得の完了を待つモードにする
             cloudAnchorMode = CloudAnchorProcessMode.WaitingForResolvedCloudAnchor;
         }
@@ -218,9 +360,11 @@ public class PlaceObject : MonoBehaviour
         // Poseからアンカーを作成する
         arAnchor = anchorManager.AddAnchor(pose);
         // アンカーのTransformを子猫のTransformの親にして、子猫の位置と向きがアンカーの影響を受けるようにする
+        spawnedObject.transform.parent = null; // 前に設定したTransformの親を外す
         spawnedObject.transform.position = Vector3.zero;
         rb.position = Vector3.zero;
         spawnedObject.transform.SetParent(arAnchor.transform, false);
+        rb.rotation = Quaternion.LookRotation(GetLookVector(pose.position));
         // 作成したアンカーをCloud Anchorに登録する
         cloudAnchor = anchorManager.HostCloudAnchor(arAnchor);
         if (cloudAnchor == null)
@@ -240,6 +384,8 @@ public class PlaceObject : MonoBehaviour
     // 画面がタッチされた際にUIManagerから呼び出される
     public void OnTouch(Vector2 touchPosition, bool addCloudAnchor = false)
     {
+        Debug.Log("OnTouch");
+
         if (HitTest(touchPosition, out Pose hitPose))
         { // タッチした先に平面がある場合
             // モデル（子猫）を配置する位置からカメラへの方向のベクトルを求めて
