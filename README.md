@@ -1,7 +1,7 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/2020/202007)の記事での完成状態がコミットされています。
+masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/2020/202008)の記事での完成状態がコミットされています。
 ビルドする際には次の3つのアセットとARCore Extensions for AR Foundationパッケージをインポートしてください。
 
 - アセット
@@ -26,9 +26,9 @@ masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/202
 
 ### 誌面掲載ソースコードの全文
 
-- [macOSで環境変数JAVA_HOMEを設定するファイル]()
+- [macOSで環境変数JAVA_HOMEを設定するファイル](https://github.com/ktaka/ARKitten2019/blob/202008/environment.plist)
 
-- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-edc75b09adb2b481f7fd694404d9495d)
+- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/5f8186ce576df24bd315dedb240a023c38f7c7af#diff-edc75b09adb2b481f7fd694404d9495d)
     - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202008/ARKitten/Assets/Scripts/PlaceObject.cs)
 
 ---
