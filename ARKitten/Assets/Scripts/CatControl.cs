@@ -6,6 +6,7 @@ using UnityEngine.EventSystems; // イベントを扱うため追加
 // ドラッグイベントを受け取れるようにするためにIDragHandlerインターフェースを追加
 public class CatControl : MonoBehaviour, IDragHandler
 {
+    public PlaceObject placeObject;
     public int strokingThreshold = 50; // なでたと判定するドラッグ回数の閾値
     int strokingNum; // ドラッグした回数のカウント用
 

@@ -106,7 +106,14 @@ public class UIManager : MonoBehaviour
         // 入力されたIDに対応するCloud Anchorを取得する
         //   CloudAnchorIdField.gameObjectを渡してCloud Anchor取得完了時に
         //   入力フィールドを非表示にしてもらう
-        placeObject.ResolveAnchor(text, CloudAnchorIdField.gameObject);
+        if (selectedIdx == 3)
+        {
+            placeObject.AddCloudAnchor(text);
+        }
+        else if (selectedIdx == 4)
+        {
+            placeObject.ResolveAnchor(text, CloudAnchorIdField.gameObject);
+        }
     }
 
     // オブジェクトが有効になった時に呼び出される
@@ -246,7 +253,7 @@ public class UIManager : MonoBehaviour
     public void OnValueChanged(int idx)
     {
         selectedIdx = idx;
-        if (selectedIdx == 4)
+        if (selectedIdx == 3 || selectedIdx == 4)
         {
             // 4番目の要素が選択された際はCloud Anchor ID入力フィールドを表示状態にする
             CloudAnchorIdField.gameObject.SetActive(true);
@@ -267,9 +274,9 @@ public class UIManager : MonoBehaviour
             case 2: // ボールを配置して投げる
                 ballControl.OnTouch(touchPosition);
                 break;
-            case 3: // 子猫を配置してCloud Anchorに登録する
-                placeObject.OnTouch(touchPosition, true);
-                break;
+            //case 3: // 子猫を配置してCloud Anchorに登録する
+            //    placeObject.OnTouch(touchPosition, true);
+            //    break;
         }
     }
 }

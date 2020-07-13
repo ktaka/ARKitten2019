@@ -20,9 +20,12 @@ public class PlaceObject : MonoBehaviour
     public bool useAR = true; // AR使用フラグ（プレイモードで実行する際はfalseにする）
     public GameObject floorPlane; // プレイモード用の床面
     public float rotateDuration = 3.0f; // 回転所要時間
-    public float delayTime = 3.0f; // 回転を始めるまでの時間
+    public float delayTime = 2.0f; // 回転を始めるまでの時間
     public float itchingDuration = 20.0f; // シャカシャカ掻く間隔の時間（秒）
     public GameObject shareCloudAnchorButton; // Cloud Anchorを共有するボタン
+    public FoodControl foodControl;
+    public BallControl ballControl;
+    public string RoomID = "1";
 
     GameObject cloudAnchorInputField; // Cloud Anchor ID入力フィールド
     ARAnchorManager anchorManager;
@@ -43,6 +46,9 @@ public class PlaceObject : MonoBehaviour
     float arrivalTime; // 子猫が目的の位置まで移動するのにかかる時間
     float speed; // 子猫の移動スピード
     float nextItchingTime; // 次にシャカシャカ掻くまでの時間（秒）
+    bool isCloudMaster = true;
+    string uuid;
+    Pose hitPoseForAnchor;
 
     // for Firebase
     public string databaseUrl; // データベースのURL
@@ -78,6 +84,9 @@ public class PlaceObject : MonoBehaviour
         nextItchingTime = Time.time + itchingDuration;
         // Cloud Anchorを共有するボタンは非表示にしておく
         shareCloudAnchorButton.SetActive(false);
+        Guid guid = Guid.NewGuid();
+        uuid = guid.ToString();
+        Debug.Log("uuid=" + uuid);
     }
 
     // フレーム毎に呼び出される
@@ -123,11 +132,46 @@ public class PlaceObject : MonoBehaviour
     {
         public Vector3 position; // オブジェクトの位置
         public Quaternion rotation; // オブジェクトの向きを表す回転
+        public Vector4 moveTo;
+        public RotateObject rotateObj;
+        public string animation;
 
         public PlacedObject(Vector3 position, Quaternion rotation)
         {
             this.position = position;
             this.rotation = rotation;
+        }
+    }
+
+    public class RotateObject
+    {
+        public Quaternion from;
+        public Quaternion to;
+        public string start;
+
+        public RotateObject(Quaternion from, Quaternion to, DateTime start)
+        {
+            this.from = from;
+            this.to = to;
+            this.start = start.ToString();
+        }
+    }
+
+    // Firebase Realtime Databaseの構造を扱うためのクラス
+    // 配置するオブジェクトごとに位置と向き（回転）を持つためのクラス
+    public class BallObject
+    {
+        public Vector3 position; // オブジェクトの位置
+        public Quaternion rotation; // オブジェクトの向きを表す回転
+        public Vector3 force;
+        public string uuid;
+
+        public BallObject(Vector3 position, Quaternion rotation, Vector3 throwForce, string uuid)
+        {
+            this.position = position;
+            this.rotation = rotation;
+            this.force = throwForce;
+            this.uuid = uuid;
         }
     }
 
@@ -204,8 +248,139 @@ public class PlaceObject : MonoBehaviour
                 string id = snapshot.Value.ToString();
                 // IDに対応するCloud Anchorを取得する
                 ResolveAnchor(id);
+                SetupDBEventListners(roomId);
             }
         });
+    }
+
+    public void WriteFoodInfo(GameObject obj)
+    {
+        if (dbRef == null)
+        {
+            return;
+        }
+        obj.transform.SetParent(cloudAnchor.transform, true);
+        // 位置と向きを表す回転を含む配置オブジェクト情報を作成する
+        PlacedObject foodObj = new PlacedObject(obj.transform.localPosition, obj.transform.localRotation);
+        // ひとつの配置オブジェクトをまとめて登録するためにJSONの文字列に変換
+        string json = JsonUtility.ToJson(foodObj);
+        // 子猫の配置情報にRoom IDをキーとしてDBに出力する
+        dbRef.Child("food").Child(RoomID).SetRawJsonValueAsync(json);
+    }
+
+    public void WriteBallInfo(GameObject obj, Vector3 throwForce)
+    {
+        if (dbRef == null)
+        {
+            return;
+        }
+        obj.transform.SetParent(cloudAnchor.transform, true);
+        // 位置と向きを表す回転を含む配置オブジェクト情報を作成する
+        BallObject ballObj = new BallObject(obj.transform.localPosition, obj.transform.localRotation, throwForce, uuid);
+        // ひとつの配置オブジェクトをまとめて登録するためにJSONの文字列に変換
+        string json = JsonUtility.ToJson(ballObj);
+        // 子猫の配置情報にRoom IDをキーとしてDBに出力する
+        dbRef.Child("ball").Child(RoomID).SetRawJsonValueAsync(json);
+    }
+
+    void SetupDBEventListners(string roomId)
+    {
+        dbRef.Child("kitten").Child(roomId).Child("moveTo").ValueChanged += MoveToValueChanged;
+        dbRef.Child("kitten").Child(roomId).Child("rotateObj").ValueChanged += RotateObjValueChanged;
+        dbRef.Child("kitten").Child(roomId).Child("animation").ValueChanged += AnimationValueChanged;
+        dbRef.Child("food").Child(roomId).ValueChanged += FoodObjectPlaced;
+        dbRef.Child("ball").Child(roomId).ValueChanged += BallObjectThrown;
+    }
+
+    void BallObjectThrown(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // 読み込んだ内容から向きを表す回転の情報を取り出す
+        DataSnapshot snapshot = args.Snapshot;
+        string ballUuid = snapshot.Child("uuid").Value.ToString();
+        if (ballUuid == uuid)
+        {
+            return;
+        }
+        // JSONの文字列として取得した回転の情報（w,x,y,z）をクオータニオンのオブジェクトに変換する
+        Vector3 pos = JsonUtility.FromJson<Vector3>(snapshot.Child("position").GetRawJsonValue());
+        Vector3 throwForce = JsonUtility.FromJson<Vector3>(snapshot.Child("force").GetRawJsonValue());
+        ballControl.placeWithAnchor(cloudAnchor.transform, pos, throwForce);
+    }
+
+    void FoodObjectPlaced(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // 読み込んだ内容から向きを表す回転の情報を取り出す
+        DataSnapshot snapshot = args.Snapshot;
+        // JSONの文字列として取得した回転の情報（w,x,y,z）をクオータニオンのオブジェクトに変換する
+        Vector3 pos = JsonUtility.FromJson<Vector3>(snapshot.Child("position").GetRawJsonValue());
+        foodControl.placeWithAnchor(cloudAnchor.transform, pos);
+    }
+
+    void MoveToValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // 読み込んだ内容から向きを表す回転の情報を取り出す
+        DataSnapshot snapshot = args.Snapshot;
+        // JSONの文字列として取得した回転の情報（w,x,y,z）をクオータニオンのオブジェクトに変換する
+        Vector4 posAndOffset = JsonUtility.FromJson<Vector4>(snapshot.GetRawJsonValue());
+        Vector3 moveToPos = new Vector3(posAndOffset.x, posAndOffset.y, posAndOffset.z);
+        MoveTo(moveToPos, posAndOffset.w);
+    }
+
+    void RotateObjValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // 読み込んだ内容から向きを表す回転の情報を取り出す
+        DataSnapshot snapshot = args.Snapshot;
+        rotateFrom = JsonUtility.FromJson<Quaternion>(snapshot.Child("from").GetRawJsonValue());
+        rotateTo = JsonUtility.FromJson<Quaternion>(snapshot.Child("to").GetRawJsonValue());
+        //string start = snapshot.Child("delay").Value.ToString();
+        //DateTime startTime = DateTime.Parse(start);
+        //TimeSpan elapsed = startTime.Subtract(DateTime.UtcNow);
+        //rotateDelta = rotateDuration + (float)elapsed.TotalSeconds;
+        rotateDelta = rotateDuration + delayTime;
+    }
+
+    void AnimationValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // 読み込んだ内容から向きを表す回転の情報を取り出す
+        DataSnapshot snapshot = args.Snapshot;
+        string animation = snapshot.Value.ToString();
+        if (animation.Length > 0)
+        {
+            animator.SetTrigger(animation);
+        }
+    }
+
+    public void SyncAnimation(string animation)
+    {
+        if (dbRef != null)
+        {
+            dbRef.Child("kitten").Child(RoomID).Child("animation").SetValueAsync(animation);
+        }
     }
 
     // Cloud Anchorに関する処理モード
@@ -243,12 +418,13 @@ public class PlaceObject : MonoBehaviour
                 // Cloud Anchor IDを取得する
                 cloudAnchorId = cloudAnchor.cloudAnchorId;
                 // Firebase Realtime DatabaseにRoom情報を出力する
-                SetupFirebase(WriteRoomInfo, "1");
+                SetupFirebase(WriteRoomInfo, RoomID);
                 // Cloud Anchor ID共有ボタンのスクリプトコンポーネントにIDをセットする
                 shareCloudAnchorButton.GetComponent<ShareCloudAnchor>().cloudAnchorID = cloudAnchorId;
                 // Cloud Anchorの処理は必要ないモードにする
-                cloudAnchor = null;
+                //cloudAnchor = null;
                 cloudAnchorMode = CloudAnchorProcessMode.WaitingForNoOne;
+                isCloudMaster = true;
             }
         }
         // Cloud Anchorの取得の完了を待つモードの時
@@ -262,11 +438,12 @@ public class PlaceObject : MonoBehaviour
                 Debug.Log("===>Success to Resolve Anchor ID");
                 // Cloud Anchorオブジェクトのtransformに位置と回転の情報が入っているので、それを元に子猫を配置する
                 PlaceWithAnchor(cloudAnchor);
-                // Cloud Anchor ID入力フィールドは非表示にする
-                cloudAnchorInputField.SetActive(false);
+                //// Cloud Anchor ID入力フィールドは非表示にする
+                //cloudAnchorInputField.SetActive(false);
                 // Cloud Anchorの処理は必要ないモードにする
-                cloudAnchor = null;
+                //cloudAnchor = null;
                 cloudAnchorMode = CloudAnchorProcessMode.WaitingForNoOne;
+                isCloudMaster = false;
             }
         }
     }
@@ -302,11 +479,9 @@ public class PlaceObject : MonoBehaviour
             spawnedObject.transform.SetParent(anchor.transform, false);
         }
 
-        // テスト用にRoom IDは1とする
-        string key = "1";
         // Room IDに対応する子猫の配置情報を読み込む
         // ContinueWithの先は非同期で実行される
-        dbRef.Child("kitten").Child(key).GetValueAsync().ContinueWith(readtask =>
+        dbRef.Child("kitten").Child(RoomID).GetValueAsync().ContinueWith(readtask =>
         {
             // 非同期で実行される処理：読み込みが完了した時に実行される
             if (readtask.IsCompleted)
@@ -331,7 +506,7 @@ public class PlaceObject : MonoBehaviour
         cloudAnchorInputField = uiObject;
         // Firebase Realtime DatabaseからRoom情報を読み取る
         // テスト用にRoom IDは1とする
-        SetupFirebase(ReadRoomInfo, "1");
+        SetupFirebase(ReadRoomInfo, RoomID);
     }
 
     public void ResolveAnchor(string id)
@@ -353,6 +528,13 @@ public class PlaceObject : MonoBehaviour
     }
 
     // 子猫を配置した時のPose情報を元にCloud Anchorを登録する
+    public void AddCloudAnchor(string roomId)
+    {
+        RoomID = roomId;
+        AddCloudAnchor(hitPoseForAnchor);
+    }
+
+    // 子猫を配置した時のPose情報を元にCloud Anchorを登録する
     public void AddCloudAnchor(Pose pose)
     {
         // Cloud Anchor ID共有ボタンを非表示にする
@@ -363,6 +545,7 @@ public class PlaceObject : MonoBehaviour
         spawnedObject.transform.parent = null; // 前に設定したTransformの親を外す
         spawnedObject.transform.position = Vector3.zero;
         rb.position = Vector3.zero;
+        //rb.transform.SetParent
         spawnedObject.transform.SetParent(arAnchor.transform, false);
         rb.rotation = Quaternion.LookRotation(GetLookVector(pose.position));
         // 作成したアンカーをCloud Anchorに登録する
@@ -415,11 +598,12 @@ public class PlaceObject : MonoBehaviour
                 // 配置用モデルを回転させてカメラの方に向ける
                 rb.rotation = rotation;
             }
+            hitPoseForAnchor = hitPose;
         }
-        if (addCloudAnchor)
-        {
-            AddCloudAnchor(hitPose);
-        }
+        //if (addCloudAnchor)
+        //{
+        //    AddCloudAnchor(hitPose);
+        //}
     }
 
     // 配置モデル（子猫）からカメラへの方向のベクトルを求める
@@ -436,11 +620,15 @@ public class PlaceObject : MonoBehaviour
     // 配置オブジェクトの向きとカメラへの方向をチェックして回転に必要な値を求める
     void CheckObjDirection()
     {
-        if (!CheckTemper())
+        if (!isCloudMaster)
         {
-            // 子猫の機嫌が良くない場合は向きを変えるアニメーションをしない
             return;
         }
+        //if (!CheckTemper())
+        //{
+        //    // 子猫の機嫌が良くない場合は向きを変えるアニメーションをしない
+        //    return;
+        //}
         // 配置オブジェクトの向きのベクトルを得る
         Vector3 catDirVector = rb.transform.forward;
         // 配置オブジェクトからカメラへの方向のベクトルを得る
@@ -457,6 +645,16 @@ public class PlaceObject : MonoBehaviour
             // 回転アニメーション残り時間に回転所要時間に回転を始めるまでの時間を加えてセットする　
             // （回転を始めるまでの時間分遅れて回転を始めるため）
             rotateDelta = rotateDuration + delayTime;
+            SyncRotateObjCommand(rotateFrom, rotateTo, DateTime.UtcNow.AddSeconds(delayTime));
+        }
+    }
+
+    void SyncRotateObjCommand(Quaternion from, Quaternion to, DateTime startTime)
+    {
+        if (dbRef != null)
+        {
+            RotateObject rotObj = new RotateObject(from, to, startTime);
+            dbRef.Child("kitten").Child(RoomID).Child("rotateObj").SetRawJsonValueAsync(JsonUtility.ToJson(rotObj));
         }
     }
 
@@ -488,7 +686,9 @@ public class PlaceObject : MonoBehaviour
             if (Time.time > nextItchingTime)
             {
                 // 機嫌が良くない時のアニメーション（シャカシャカする）に遷移する
+                SyncAnimation("Itching");
                 animator.SetTrigger("Itching");
+                SyncAnimation("");
                 // 次にシャカシャカ掻くまでの時間をセット
                 nextItchingTime = Time.time + itchingDuration;
             }
@@ -575,6 +775,16 @@ public class PlaceObject : MonoBehaviour
         animator.SetFloat("MoveSpeed", speed);
         // 指定位置まで移動するのにかかる時間を求める
         arrivalTime = distance / speed;
+    }
+
+    void SyncMoveToCommand(Vector3 pos, float offset)
+    {
+        if (dbRef != null)
+        {
+            Vector3 childPos = pos - cloudAnchor.transform.position;
+            Vector4 posAndOffset = new Vector4(childPos.x, childPos.y, childPos.z, offset);
+            dbRef.Child("kitten").Child(RoomID).Child("moveTo").SetRawJsonValueAsync(JsonUtility.ToJson(posAndOffset));
+        }
     }
 
     // タッチされた先に平面があるか判定する

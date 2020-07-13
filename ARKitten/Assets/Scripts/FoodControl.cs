@@ -33,11 +33,29 @@ public class FoodControl : MonoBehaviour
             }
             else
             {
+                spawnedObject.transform.parent = null;
                 spawnedObject.transform.position = hitPose.position;
             }
             // 子猫をボールの衝突位置まで動かす
             placeObject.MoveTo(spawnedObject.transform.position);
+            placeObject.WriteFoodInfo(spawnedObject);
         }
+    }
+
+    public void placeWithAnchor(Transform parent, Vector3 localPos)
+    {
+        if (spawnedObject == null)
+        { // 配置用モデルが未生成の場合
+          // プレハブから配置用モデルを生成し、レイが平面に衝突した位置に配置する
+            spawnedObject = Instantiate(foodPrefab, Vector3.zero, Quaternion.identity);
+        }
+        spawnedObject.transform.parent = null; // 前に設定したTransformの親を外す
+        spawnedObject.transform.localPosition = localPos;
+        spawnedObject.transform.SetParent(parent, false);
+        //localPos.y += yAxisOffset;
+        //spawnedObject.transform.position = localPos;
+        // 子猫をボールの衝突位置まで動かす
+        placeObject.MoveTo(spawnedObject.transform.position);
     }
 
     // タッチされた先に平面があるか判定する

@@ -43,4 +43,15 @@ public class BallControl : MonoBehaviour
             obj.GetComponent<BallOperation>().placeObject = placeObject;
         }
     }
+
+    public void placeWithAnchor(Transform parent, Vector3 localPos, Vector3 throwForce)
+    {
+        GameObject obj = Instantiate(ballObject, Vector3.zero, Quaternion.identity);
+        obj.GetComponent<BallOperation>().placeObject = placeObject;
+        obj.transform.localPosition = localPos;
+        obj.transform.SetParent(parent, false);
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        rb.AddForce(throwForce);
+        rb.useGravity = true;
+    }
 }
