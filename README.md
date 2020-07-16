@@ -28,7 +28,7 @@ masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/202
 
 - [macOSで環境変数JAVA_HOMEを設定するファイル]((https://github.com/ktaka/ARKitten2019/blob/202008r/environment.plist)
 
-- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-edc75b09adb2b481f7fd694404d9495d)
+- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f2dd504753851a49c7801ed696a00d4901cc4129#diff-edc75b09adb2b481f7fd694404d9495d)
     - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202008r/ARKitten/Assets/Scripts/PlaceObject.cs)
 
 ---
