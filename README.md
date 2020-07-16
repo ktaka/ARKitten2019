@@ -1,7 +1,7 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
-masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/2020/202007)の記事での完成状態がコミットされています。
+masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/2020/202008)の記事での完成状態がコミットされています。
 ビルドする際には次の3つのアセットとARCore Extensions for AR Foundationパッケージをインポートしてください。
 
 - アセット
@@ -14,7 +14,27 @@ masterブランチには[2020年7月号](http://gihyo.jp/magazine/SD/archive/202
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年8月号
+
+### 誌面掲載URL
+-[EDM4Uのダウンロード](https://github.com/googlesamples/unity-jar-resolver/raw/master/external-dependency-manager-latest.unitypackage)
+
+-[UnityプロジェクトにFirebaseを追加する（公式ページ）](https://firebase.google.com/docs/unity/setup?hl=ja)
+
+-[Firebaseコンソール](https://console.firebase.google.com/)
+
+
+### 誌面掲載ソースコードの全文
+
+- [macOSで環境変数JAVA_HOMEを設定するファイル]((https://github.com/ktaka/ARKitten2019/blob/202008r/environment.plist)
+
+- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f2dd504753851a49c7801ed696a00d4901cc4129#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202008r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+---
+
 ## 2020年7月号
+[2020年7月号](http://gihyo.jp/magazine/SD/archive/2020/202007)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202007d)にあります。
 
 ### 誌面掲載URL
 - [GitHubのarcore-unity-extensionsのリリースページ (ARCore Extensions for AR Foundation)](https://github.com/google-ar/arcore-unity-extensions/releases/)
