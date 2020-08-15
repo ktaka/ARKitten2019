@@ -17,29 +17,29 @@
       "url": "https://unityregistry-pa.googleapis.com"
     },
     "com.google.firebase.app": {
-      "version": "6.15.0",
+      "version": "6.15.2",
       "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.google.external-dependency-manager": "1.2.155"
+        "com.google.external-dependency-manager": "1.2.156"
       },
       "url": "https://unityregistry-pa.googleapis.com"
     },
     "com.google.firebase.auth": {
-      "version": "6.15.0",
+      "version": "6.15.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.google.firebase.app": "6.15.0"
+        "com.google.firebase.app": "6.15.2"
       },
       "url": "https://unityregistry-pa.googleapis.com"
     },
     "com.google.firebase.database": {
-      "version": "6.15.0",
+      "version": "6.15.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.google.firebase.auth": "6.15.0"
+        "com.google.firebase.auth": "6.15.2"
       },
       "url": "https://unityregistry-pa.googleapis.com"
     },

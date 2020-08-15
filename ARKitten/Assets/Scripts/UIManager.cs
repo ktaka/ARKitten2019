@@ -103,10 +103,18 @@ public class UIManager : MonoBehaviour
     // Cloud Anchor ID入力フィールドに入力された際に呼び出されるリスナー
     void OnInputEndEdit(string text)
     {
-        // 入力されたIDに対応するCloud Anchorを取得する
-        //   CloudAnchorIdField.gameObjectを渡してCloud Anchor取得完了時に
-        //   入力フィールドを非表示にしてもらう
-        placeObject.ResolveAnchor(text, CloudAnchorIdField.gameObject);
+        // 3番目（Cloud Anchor登録モード）
+        if (selectedIdx == 3)
+        {
+            // 入力されたIDのRoomにCloud Anchorを登録する
+            placeObject.AddCloudAnchor(text);
+        }
+        // もしくは4番目（Cloud Anchor取得モード）
+        else if (selectedIdx == 4)
+        {
+            // 入力されたRoom IDに対応するCloud Anchorを取得する
+            placeObject.ResolveAnchor(text, CloudAnchorIdField.gameObject);
+        }
     }
 
     // オブジェクトが有効になった時に呼び出される
@@ -246,14 +254,15 @@ public class UIManager : MonoBehaviour
     public void OnValueChanged(int idx)
     {
         selectedIdx = idx;
-        if (selectedIdx == 4)
+        if (selectedIdx == 3 || selectedIdx == 4)
         {
-            // 4番目の要素が選択された際はCloud Anchor ID入力フィールドを表示状態にする
+            // 3番目（Cloud Anchor登録モード）もしくは4番目（Cloud Anchor取得モード）
+            // の要素が選択された際はCloud Anchor ID入力フィールドを表示状態にする
             CloudAnchorIdField.gameObject.SetActive(true);
         }
     }
 
-    // Dropdownで選択中の要素に対応する機能が呼び出す
+    // Dropdownで選択中の要素に対応する機能をタップ位置を伴って呼び出す
     void SelectControl(int idx, Vector2 touchPosition)
     {
         switch (idx)
@@ -266,9 +275,6 @@ public class UIManager : MonoBehaviour
                 break;
             case 2: // ボールを配置して投げる
                 ballControl.OnTouch(touchPosition);
-                break;
-            case 3: // 子猫を配置してCloud Anchorに登録する
-                placeObject.OnTouch(touchPosition, true);
                 break;
         }
     }

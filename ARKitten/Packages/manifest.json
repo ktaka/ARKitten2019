@@ -2,7 +2,7 @@
   "dependencies": {
     "com.google.ar.core.arfoundation.extensions": "file:/Users/ktaka/develop/sd/202007d/package",
     "com.google.external-dependency-manager": "1.2.156",
-    "com.google.firebase.database": "6.15.0",
+    "com.google.firebase.database": "6.15.2",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "3.4.5",

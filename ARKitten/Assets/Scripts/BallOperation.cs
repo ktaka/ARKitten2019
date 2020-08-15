@@ -16,12 +16,17 @@ public class BallOperation : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
     private Vector3 screenPos; // 開始時のスクリーン座標の保存用
     private float beginDragTime; // ドラッグ開始時間
 
-    // Start is called before the first frame update
-    void Start()
+    // オブジェクトが生成された際に実行される（Startよりも前）
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         // 重力の影響を受けないようにする
         rb.useGravity = false;
+    }
+
+    // 最初にUpdateが呼ばれる前に実行される
+    void Start()
+    {
         // ファークリップ面までの距離をボールを削除する高さ（Y軸の閾値）とする
         yPosition = -Camera.main.farClipPlane;
     }
@@ -80,9 +85,12 @@ public class BallOperation : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
         // 10をかけて移動時間の効果を調整して係数とする
         float dragFactor = (Time.time - beginDragTime) * 10;
         // 移動ベクトルに係数をかけたものをボールに加える力とする
-        rb.AddForce(100.0f / dragFactor * moved);
+        Vector3 throwForce = 100.0f / dragFactor * moved;
+        rb.AddForce(throwForce);
         // 重力の影響を受けるようにする
         rb.useGravity = true;
+        // 他の端末にボールを投げた状態を同期する
+        placeObject.WriteBallInfo(gameObject, throwForce);
     }
 
     // オブジェクトの衝突があった際に呼び出される

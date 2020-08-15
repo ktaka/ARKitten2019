@@ -2036,6 +2036,9 @@ MonoBehaviour:
   delayTime: 3
   itchingDuration: 20
   shareCloudAnchorButton: {fileID: 1991894588}
+  RoomID: 1
+  foodControl: {fileID: 1232436430}
+  ballControl: {fileID: 687922912}
   databaseUrl: 
 --- !u!114 &1544679005
 MonoBehaviour:

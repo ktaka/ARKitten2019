@@ -43,4 +43,23 @@ public class BallControl : MonoBehaviour
             obj.GetComponent<BallOperation>().placeObject = placeObject;
         }
     }
+
+    // アンカーのトランスフォームを親にしてボールを配置して投げる力を加える
+    public void placeWithAnchor(Transform parent, Vector3 localPos, Vector3 throwForce)
+    {
+        // ボールのオブジェクトを生成する
+        GameObject obj = Instantiate(ballObject, Vector3.zero, Quaternion.identity);
+        // ボールのオブジェクトと子猫の配置オブジェクトを関連付ける
+        // （ボールが平面に当たった時に子猫に反応する命令を出せるようにするため）
+        obj.GetComponent<BallOperation>().placeObject = placeObject;
+        // ボールの位置をローカル座標でセットする
+        obj.transform.localPosition = localPos;
+        // アンカーのトランスフォームを親にする（ローカル座標は元の値が反映される）
+        obj.transform.SetParent(parent, false);
+        // 投げる力を加える
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        rb.AddForce(throwForce);
+        // 重力の影響を受けるようにする
+        rb.useGravity = true;
+    }
 }
