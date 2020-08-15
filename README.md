@@ -14,6 +14,10 @@ masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/202
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年9月号
+
+[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202009r)を参照ください。
+
 ## 2020年8月号
 
 ### 誌面掲載URL
