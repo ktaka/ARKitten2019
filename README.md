@@ -14,7 +14,33 @@ masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/202
 
 <img src="ARKitten2019.jpg" width="420px">
 
+## 2020年9月号
+
+### 誌面掲載URL
+
+- [ARCoreサポート端末一覧](https://developers.google.com/ar/discover/supported-devices)
+
+### 誌面掲載ソースコードの全文
+
+- [PlaceObjectでアニメーションの同期ができるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/9bf86592facf1daf812badf92c878e5b87f5c207#diff-edc75b09adb2b481f7fd694404d9495d)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202009r/ARKitten/Assets/Scripts/PlaceObject.cs)
+
+- [FoodControlにAR空間共有機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/9bf86592facf1daf812badf92c878e5b87f5c207#diff-d655a3dd07800e525411780dfc357b56)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202009r/ARKitten/Assets/Scripts/FoodControl.cs)
+
+- [BallControlにAR空間共有機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/9bf86592facf1daf812badf92c878e5b87f5c207#diff-d5678ccd00ac1fff0ea8cbb19593cb35)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202009r/ARKitten/Assets/Scripts/BallControl.cs)
+
+- [BallOperationにAR空間共有機能を追加する（差分表示）](https://github.com/ktaka/ARKitten2019/commit/9bf86592facf1daf812badf92c878e5b87f5c207#diff-b6b6d71d3b256e23f6770bb5234920c2)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202009r/ARKitten/Assets/Scripts/BallOperation.cs)
+
+- [UIManagerのCloud Anchor登録操作を修正する](https://github.com/ktaka/ARKitten2019/commit/9bf86592facf1daf812badf92c878e5b87f5c207#diff-1bc3ba85714110219306dc15bb756ead)
+    - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202009r/ARKitten/Assets/Scripts/UIManager.cs)
+
+---
+
 ## 2020年8月号
+[2020年8月号](http://gihyo.jp/magazine/SD/archive/2020/202008)の記事での完成状態は[こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202008r)にあります。
 
 ### 誌面掲載URL
 -[EDM4Uのダウンロード](https://github.com/googlesamples/unity-jar-resolver/raw/master/external-dependency-manager-latest.unitypackage)
@@ -28,7 +54,7 @@ masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/202
 
 - [macOSで環境変数JAVA_HOMEを設定するファイル]((https://github.com/ktaka/ARKitten2019/blob/202008r/environment.plist)
 
-- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/558df18cb25523605f0cec5d391b0991e2a2d0b2#diff-edc75b09adb2b481f7fd694404d9495d)
+- [PlaceObjectでFirebase Realtime Databaseにアクセスできるようにする（差分表示）](https://github.com/ktaka/ARKitten2019/commit/f2dd504753851a49c7801ed696a00d4901cc4129#diff-edc75b09adb2b481f7fd694404d9495d)
     - [全体表示](https://github.com/ktaka/ARKitten2019/blob/202008r/ARKitten/Assets/Scripts/PlaceObject.cs)
 
 ---
