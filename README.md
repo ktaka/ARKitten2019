@@ -1,6 +1,8 @@
 # ARKitten2019
 技術評論社の月刊誌Software Designで連載中の「スマホARアプリ開発入門」で開発するサンプルのリポジトリです。
 
+※ Android用にビルドする場合は[こちら](https://github.com/ktaka/ARKitten2019/wiki/Android%E7%94%A8%E3%81%AE%E3%83%93%E3%83%AB%E3%83%89%E8%A8%AD%E5%AE%9A%EF%BC%8864bit%E5%AF%BE%E5%BF%9C%EF%BC%89)をご覧ください。64bit対応のアプリをビルドする方法を追記してあります。
+
 masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/2020/202008)の記事での完成状態がコミットされています。
 ビルドする際には次の3つのアセットとARCore Extensions for AR Foundationパッケージをインポートしてください。
 
@@ -17,6 +19,8 @@ masterブランチには[2020年8月号](http://gihyo.jp/magazine/SD/archive/202
 ## 2020年9月号
 
 [こちらのブランチ](https://github.com/ktaka/ARKitten2019/tree/202009r)を参照ください。
+
+※ Android用にビルドする場合は[こちら](https://github.com/ktaka/ARKitten2019/wiki/Android%E7%94%A8%E3%81%AE%E3%83%93%E3%83%AB%E3%83%89%E8%A8%AD%E5%AE%9A%EF%BC%8864bit%E5%AF%BE%E5%BF%9C%EF%BC%89)をご覧ください。64bit対応のアプリをビルドする方法を追記してあります。
 
 ## 2020年8月号
 
